@@ -1,7 +1,7 @@
 # Tailspin Toys
 
 > 🇵🇱 **Repozytorium szablonowe na GitHub Dev Days Gdańsk 2026.**
-> Instrukcja warsztatu po polsku: **https://pawelsiwek.github.io/gdn-dev-days-2026/cli-workshop/real-world-development/cli/**
+> Instrukcja warsztatu po polsku: **https://pawel-siwek.github.io/gdn-dev-days-2026/cli-workshop/real-world-development/cli/**
 > Zacznij od kliknięcia **Use this template** → **Create a new repository**.
 
 Tailspin Toys to platforma crowdfundingowa dla gier o tematyce programistycznej. Projekt jest stroną fikcyjnej firmy zbierającej fundusze na gry, zbudowaną jako pojedyncza witryna [Astro](https://astro.build/) (w pełni prerenderowana, wyjście statyczne), ostylowana [Tailwind CSS](https://tailwindcss.com/). Dane leżą w lokalnej bazie SQLite, do której dostęp odbywa się przez [Drizzle ORM](https://orm.drizzle.team/) i wbudowany sterownik SQLite w Node.js; strony odpytują bazę bezpośrednio we frontmatterze w czasie budowania, więc nie ma osobnego backendu.
@@ -54,7 +54,7 @@ Kopia [`github-samples/tailspin-toys`](https://github.com/github-samples/tailspi
 Instrukcje dla Copilota (`.github/copilot-instructions.md`, `.github/instructions/`,
 `.github/skills/`) **celowo pozostawiono po angielsku** — sterują generowaniem kodu,
 a tłumaczenie ich pogorszyłoby wyniki i rozjechało się z konwencjami repozytorium.
-Pełna atrybucja: [NOTICE.md](https://github.com/pawelsiwek/gdn-dev-days-2026/blob/main/NOTICE.md).
+Pełna atrybucja: [NOTICE.md](https://github.com/pawel-siwek/gdn-dev-days-2026/blob/main/NOTICE.md).
 
 To nie jest oficjalny materiał GitHuba.
 
