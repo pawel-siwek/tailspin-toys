@@ -1,56 +1,56 @@
-## Description
+## Opis
 
-<!-- Provide a brief summary of your changes and the motivation behind them. -->
+<!-- Krótko podsumuj swoje zmiany i ich motywację. -->
 
-## Related Issue
+## Powiązane zgłoszenie
 
-<!-- Optional: if this PR relates to an issue, link it below (e.g. "Closes #123"). -->
+<!-- Opcjonalnie: jeśli ten PR dotyczy zgłoszenia, podlinkuj je poniżej (np. "Closes #123"). -->
 
 
-## Type of Change
+## Rodzaj zmiany
 
-<!-- Check the relevant option(s) -->
+<!-- Zaznacz właściwe opcje -->
 
-- [ ] 🐛 Bug fix (non-breaking change that fixes an issue)
-- [ ] ✨ New feature (non-breaking change that adds functionality)
-- [ ] 💥 Breaking change (fix or feature that would cause existing functionality to change)
-- [ ] 📚 Documentation update
-- [ ] 🧪 Test update
-- [ ] 🔧 Refactor (no functional changes)
+- [ ] 🐛 Poprawka błędu (zmiana kompatybilna wstecz, która naprawia problem)
+- [ ] ✨ Nowa funkcja (zmiana kompatybilna wstecz, która dodaje funkcjonalność)
+- [ ] 💥 Zmiana niekompatybilna wstecz (poprawka lub funkcja zmieniająca działanie istniejącej funkcjonalności)
+- [ ] 📚 Aktualizacja dokumentacji
+- [ ] 🧪 Aktualizacja testów
+- [ ] 🔧 Refaktoryzacja (bez zmian funkcjonalnych)
 
-## Changes Made
+## Wprowadzone zmiany
 
-<!-- List the key changes in this PR -->
+<!-- Wymień kluczowe zmiany w tym PR -->
 
 -
 
-## Testing
+## Testowanie
 
-<!-- Describe how you tested your changes -->
+<!-- Opisz, jak przetestowano zmiany -->
 
-### Data Layer Changes
+### Zmiany w warstwie danych
 
-- [ ] Ran `npm run test:unit` - all tests pass
-- [ ] Added/updated Vitest tests for data-layer changes
-- [ ] Generated a migration (`npm run db:generate`) for any schema change
+- [ ] Uruchomiono `npm run test:unit`, wszystkie testy przechodzą
+- [ ] Dodano/zaktualizowano testy Vitest dla zmian w warstwie danych
+- [ ] Wygenerowano migrację (`npm run db:generate`) dla każdej zmiany schematu
 
-### Frontend Changes
+### Zmiany we frontendzie
 
-- [ ] Ran `npm run test:e2e` - all tests pass
-- [ ] Added `data-testid` attributes to interactive elements
-- [ ] Verified build succeeds (`npm run build`)
+- [ ] Uruchomiono `npm run test:e2e`, wszystkie testy przechodzą
+- [ ] Dodano atrybuty `data-testid` do elementów interaktywnych
+- [ ] Sprawdzono, że build się powodzi (`npm run build`)
 
-## Checklist
+## Lista kontrolna
 
-<!-- Ensure all items are complete before requesting review -->
+<!-- Upewnij się, że wszystkie punkty są spełnione, zanim poprosisz o review -->
 
-- [ ] My code follows the project's coding standards
-- [ ] I have used explicit TypeScript types for function parameters and return values
-- [ ] I have built the UI with Astro components and Tailwind CSS utility classes (dark theme)
-- [ ] I have updated documentation (README, instruction files) if needed
-- [ ] My changes are focused on a single concern
-- [ ] I have written clear commit messages explaining what and why
+- [ ] Mój kod jest zgodny ze standardami kodowania projektu
+- [ ] Użyłem(-am) jawnych typów TypeScript dla parametrów funkcji i wartości zwracanych
+- [ ] Zbudowałem(-am) UI z komponentów Astro i klas narzędziowych Tailwind CSS (ciemny motyw)
+- [ ] Zaktualizowałem(-am) dokumentację (README, pliki instrukcji), jeśli było to potrzebne
+- [ ] Moje zmiany dotyczą jednego zagadnienia
+- [ ] Napisałem(-am) czytelne komunikaty commitów wyjaśniające, co i dlaczego
 
-## Additional Notes
+## Dodatkowe uwagi
 
-<!-- Any additional context, concerns, or notes for reviewers -->
+<!-- Dodatkowy kontekst, obawy lub uwagi dla recenzentów -->

@@ -1,106 +1,109 @@
-# Tailspin Toys Crowd Funding Development Guidelines
+# Wytyczne dla programistów Tailspin Toys
 
-This is a crowdfunding platform for games with a developer theme. The application is a single **Astro 7** site (fully prerendered/static output) styled with **Tailwind CSS v4**. Data is stored in a local SQLite database accessed at build time through **Drizzle ORM + Node.js's built-in SQLite driver**; pages query the database directly in frontmatter — there is no separate backend API or client-side UI framework. Please follow these guidelines when contributing:
+To platforma crowdfundingowa dla gier o tematyce programistycznej. Aplikacja to pojedyncza witryna w **Astro 7** (w pełni prerenderowana, wyjście statyczne) ostylowana za pomocą **Tailwind CSS v4**. Dane są przechowywane w lokalnej bazie SQLite, do której w czasie budowania sięgamy przez **Drizzle ORM + wbudowany sterownik SQLite w Node.js**; strony odpytują bazę bezpośrednio we frontmatterze. Nie ma osobnego backendowego API ani frameworka UI po stronie klienta. Współtworząc projekt, trzymaj się poniższych wytycznych:
 
-## Agent notes
+## Uwagi dla agenta
 
-- Explore the project before beginning code generation
-- Create todo lists for long operations
-  - Before each step in a todo list, reread the instructions to ensure you always have the right directions
-- Always use instructions files when available, reviewing before generating code
-- Do not generate summary markdown files upon completion of a task
-- Always use absolute paths when running scripts and BASH commands
-- **NEVER commit or push to main automatically unless explicitly instructed to do so**
+- Zanim zaczniesz generować kod, przejrzyj projekt
+- Dla długich operacji twórz listy zadań
+  - Przed każdym krokiem z listy zadań ponownie przeczytaj instrukcje, żeby zawsze mieć właściwe wskazówki
+- Zawsze korzystaj z plików instrukcji, jeśli są dostępne, i przejrzyj je przed generowaniem kodu
+- Po zakończeniu zadania nie generuj plików markdown z podsumowaniem
+- W skryptach i poleceniach BASH zawsze używaj ścieżek bezwzględnych
+- **NIGDY nie commituj ani nie wypychaj do main automatycznie, chyba że wyraźnie o to poproszono**
 
-## Code standards
+## Standardy kodu
 
-### Required Before Each Commit
+### Wymagane przed każdym commitem
 
-#### Testing guidelines
+#### Wytyczne dotyczące testów
 
-- **Always run unit tests, lint, and type checks through the `quality-checks` skill.** The skill wraps `npm run test:unit`, `npm run lint`, and `npm run typecheck:all` with environment setup, ordering, and troubleshooting. Run the Playwright E2E suite directly with `npm run test:e2e`. (Starting the app for manual validation is not a quality check — run `npm run dev` directly for that.)
-- Run Vitest unit tests to verify the data layer and transforms, and Playwright tests to verify e2e and frontend functionality
-- Run ESLint to check frontend code quality before committing
-- Review the existing tests to ensure we're not duplicating efforts
-- Test code should be of the same quality as the rest of the project, and follow DRY principles
-- For frontend changes, verify the build (`npm run build`) and run the end-to-end tests (`npm run test:e2e`) directly, to ensure everything works correctly
-- When changing the data layer (schema, helpers, transforms), update and run the corresponding unit tests
+- **Testy jednostkowe, lint i kontrolę typów zawsze uruchamiaj przez skill `quality-checks`.** Skill opakowuje `npm run test:unit`, `npm run lint` i `npm run typecheck:all` wraz z przygotowaniem środowiska, kolejnością i rozwiązywaniem problemów. Zestaw testów E2E Playwright uruchamiaj bezpośrednio poleceniem `npm run test:e2e`. (Uruchomienie aplikacji do ręcznej weryfikacji nie jest kontrolą jakości: do tego służy bezpośrednio `npm run dev`.)
+- Uruchamiaj testy jednostkowe Vitest, żeby zweryfikować warstwę danych i transformacje, oraz testy Playwright, żeby zweryfikować działanie end-to-end i frontendu
+- Przed commitem uruchom ESLint, żeby sprawdzić jakość kodu frontendu
+- Przejrzyj istniejące testy, żeby nie dublować pracy
+- Kod testów powinien mieć taką samą jakość jak reszta projektu i stosować zasadę DRY
+- Przy zmianach we frontendzie zweryfikuj build (`npm run build`) i uruchom bezpośrednio testy end-to-end (`npm run test:e2e`), żeby upewnić się, że wszystko działa poprawnie
+- Przy zmianach w warstwie danych (schemat, helpery, transformacje) zaktualizuj i uruchom odpowiednie testy jednostkowe
 
-#### Project guidelines
+#### Wytyczne projektowe
 
-- When updating the database schema, generate and commit the drizzle-kit migration (`npm run db:generate`)
-- When adding new functionality, make sure you update the README
-- Make sure all guidance in the Copilot Instructions file is updated with any relevant changes, including to project structure and scripts, and programming guidance
+- Przy aktualizacji schematu bazy danych wygeneruj i zacommituj migrację drizzle-kit (`npm run db:generate`)
+- Dodając nową funkcjonalność, pamiętaj o aktualizacji README
+- Zadbaj o to, żeby wszystkie wskazówki w pliku Copilot Instructions były zaktualizowane o istotne zmiany, w tym dotyczące struktury projektu, skryptów i wytycznych programistycznych
 
-### Code formatting requirements
+### Wymagania formatowania kodu
 
-- Use TypeScript with explicit types for function parameters and return values, especially in the data layer (`db/`, `src/lib/`)
-- Frontend code (TypeScript, Astro) must pass ESLint checks (`npm run lint`)
+- Używaj TypeScriptu z jawnymi typami parametrów funkcji i wartości zwracanych, zwłaszcza w warstwie danych (`db/`, `src/lib/`)
+- Kod frontendu (TypeScript, Astro) musi przechodzić kontrolę ESLint (`npm run lint`)
 
-### Data Layer Patterns (Drizzle + Node SQLite)
+### Wzorce warstwy danych (Drizzle + Node SQLite)
 
-- Define tables in `db/schema.ts`; manage schema changes with drizzle-kit migrations - see `drizzle.instructions.md`
-- Keep data-access helpers in `src/lib/` with an **injectable `db`** argument so they're testable
-- Keep CSV/seed logic as pure functions in `db/transforms.ts`
-- Seed-derived values must be deterministic (no `Math.random`) so static builds are reproducible
+- Tabele definiuj w `db/schema.ts`; zmiany schematu zarządzaj migracjami drizzle-kit, zob. `drizzle.instructions.md`
+- Helpery dostępu do danych trzymaj w `src/lib/` z **wstrzykiwanym argumentem `db`**, żeby dało się je testować
+- Logikę CSV/seed trzymaj jako czyste funkcje w `db/transforms.ts`
+- Wartości wyprowadzane z seeda muszą być deterministyczne (bez `Math.random`), żeby statyczne buildy były odtwarzalne
 
-### Astro Patterns
+### Wzorce Astro
 
-- **Astro Pages/Components**: routing, layouts, content, and components are all `.astro` - see `astro.instructions.md`
-- Query data directly in page frontmatter via the `src/lib/` helpers (build-time, static output)
-- Dynamic routes use `getStaticPaths()` + `export const prerender = true`
-- Provide a branded `404.astro` (unknown routes are real 404s under static output)
-- Only add a scoped Astro `<script>` when genuine client interactivity is required
+- **Strony i komponenty Astro**: routing, layouty, treść i komponenty to wyłącznie pliki `.astro`, zob. `astro.instructions.md`
+- Dane odpytuj bezpośrednio we frontmatterze strony przez helpery z `src/lib/` (czas budowania, wyjście statyczne)
+- Trasy dynamiczne używają `getStaticPaths()` + `export const prerender = true`
+- Dostarcz firmową stronę `404.astro` (przy wyjściu statycznym nieznane trasy to prawdziwe błędy 404)
+- Dodawaj lokalny (scoped) `<script>` Astro tylko wtedy, gdy interaktywność po stronie klienta jest naprawdę potrzebna
 
-### Styling
+### Stylowanie
 
-- Use Tailwind CSS utility classes exclusively - see `style.instructions.md`
-- Dark theme colors: slate palette (`bg-slate-800`, `text-slate-100`, etc.)
-- Rounded corners and modern UI patterns
-- Follow modern UI/UX principles with clean, accessible interfaces
+- Używaj wyłącznie klas narzędziowych Tailwind CSS, zob. `style.instructions.md`
+- Kolory ciemnego motywu: paleta slate (`bg-slate-800`, `text-slate-100` itd.)
+- Zaokrąglone rogi i nowoczesne wzorce UI
+- Stosuj nowoczesne zasady UI/UX: czyste, dostępne interfejsy
 
-### GitHub Actions workflows
+### Workflowy GitHub Actions
 
-- Follow good security practices
-- Make sure to explicitly set the workflow permissions
-- Add comments to document what tasks are being performed
+- Stosuj dobre praktyki bezpieczeństwa
+- Zawsze jawnie ustawiaj uprawnienia workflow
+- Dodawaj komentarze opisujące, jakie zadania są wykonywane
 
-## npm Commands
+## Polecenia npm
 
-- Development commands are defined in `package.json`. They run Astro for the site and TypeScript tasks in `db/` for database setup.
-- **Skills take precedence.** Before running a command directly, check whether a skill covers the task (e.g. the `quality-checks` skill wraps unit tests, lint, and type checks). If one applies, follow it.
-- Key npm scripts:
-  - `npm run dev` — start the Astro dev server (`predev` migrates + seeds the local SQLite database)
-  - `npm run build` — build the static site (`prebuild` migrates + seeds the local SQLite database)
-  - `npm run preview` — serve the built `dist/` output
-  - `npm run lint` — ESLint
-  - `npm run test:unit` — Vitest unit tests
-  - `npm run test:e2e` — Playwright E2E tests (builds + previews first)
-  - `npm run typecheck` — type-check the pure TypeScript with `tsgo` (TypeScript 7 native compiler, via `@typescript/native-preview`) using `tsconfig.tsgo.json`
-  - `npm run typecheck:astro` — type-check `.astro` files with `astro check` (classic TypeScript package)
-  - `npm run typecheck:all` — run both type-check scripts (used by the CI `type-check` job)
-  - `npm run db:generate` / `db:migrate` / `db:seed` / `db:setup` — Drizzle schema/migration/seed tasks
-  - `npm run db:export` — migrate and seed via `predb:export`, then write the catalog grounding file to `db/catalog.json`
+- Polecenia deweloperskie są zdefiniowane w `package.json`. Uruchamiają Astro dla witryny oraz zadania TypeScript w `db/` do przygotowania bazy danych.
+- **Skille mają pierwszeństwo.** Zanim uruchomisz polecenie bezpośrednio, sprawdź, czy jakiś skill nie obejmuje tego zadania (np. skill `quality-checks` opakowuje testy jednostkowe, lint i kontrolę typów). Jeśli taki istnieje, postępuj zgodnie z nim.
+- Najważniejsze skrypty npm:
+  - `npm run dev`: uruchamia serwer deweloperski Astro (`predev` migruje i zasila lokalną bazę SQLite)
+  - `npm run build`: buduje statyczną witrynę (`prebuild` migruje i zasila lokalną bazę SQLite)
+  - `npm run preview`: serwuje zbudowane wyjście z `dist/`
+  - `npm run lint`: ESLint
+  - `npm run test:unit`: testy jednostkowe Vitest
+  - `npm run test:e2e`: testy E2E Playwright (najpierw build i preview)
+  - `npm run typecheck`: kontrola typów czystego TypeScriptu za pomocą `tsgo` (natywny kompilator TypeScript 7 z pakietu `@typescript/native-preview`) z użyciem `tsconfig.tsgo.json`
+  - `npm run typecheck:astro`: kontrola typów plików `.astro` przez `astro check` (klasyczny pakiet TypeScript)
+  - `npm run typecheck:all`: uruchamia oba skrypty kontroli typów (używany przez zadanie `type-check` w CI)
+  - `npm run db:generate` / `db:migrate` / `db:seed` / `db:setup`: zadania Drizzle dotyczące schematu, migracji i seeda
+  - `npm run db:export`: migruje i zasila bazę przez `predb:export`, a następnie zapisuje plik katalogu (grounding) do `db/catalog.json`
 
 > [!NOTE]
-> TypeScript 7 (`tsgo`) is adopted **side-by-side** for type checking only; it does not affect linting. ESLint + `typescript-eslint` and `astro check` still resolve the classic `typescript` package (kept at v6) because the native compiler's API isn't ready for them yet. Do **not** bump the classic `typescript` package to 7 (a Dependabot `ignore` holds it) until `typescript-eslint` + `@astrojs/check` support the native API. `tsgo` is `--noEmit` only; the site is still built by `astro build`.
+> TypeScript 7 (`tsgo`) jest wdrożony **równolegle** i służy wyłącznie do kontroli typów; nie wpływa na lintowanie. ESLint + `typescript-eslint` oraz `astro check` nadal korzystają z klasycznego pakietu `typescript` (utrzymywanego w wersji 6), bo API natywnego kompilatora nie jest jeszcze dla nich gotowe. **Nie** podnoś klasycznego pakietu `typescript` do wersji 7 (blokuje to wpis `ignore` w Dependabocie), dopóki `typescript-eslint` + `@astrojs/check` nie będą wspierać natywnego API. `tsgo` działa wyłącznie w trybie `--noEmit`; witrynę nadal buduje `astro build`.
 
-## Repository Structure
+## Struktura repozytorium
 
-The application lives at the repository root:
+Aplikacja znajduje się w katalogu głównym repozytorium:
 
-- `db/`: Drizzle schema, migrations, transforms, seed, and `games.csv`
-- `src/lib/`: Node SQLite client (`db.ts`) and data-access helpers (`games.ts`)
-- `src/components/`: reusable `.astro` components
-- `src/layouts/`: Astro layout templates
-- `src/pages/`: Astro page routes (`index.astro` listing, `game/[id].astro`, `404.astro`, `about.astro`)
-- `src/styles/`: CSS and Tailwind configuration
-- `src/types/`: TypeScript interfaces (Game, Publisher, Category)
-- `e2e-tests/`: Playwright E2E tests (home, games, accessibility)
-- `drizzle.config.ts`, `vitest.config.ts`, `astro.config.mjs`, `playwright.config.ts`: tooling config
-- `README.md`: Project documentation
+- `db/`: schemat Drizzle, migracje, transformacje, seed i `games.csv`
+- `src/lib/`: klient Node SQLite (`db.ts`) i helpery dostępu do danych (`games.ts`)
+- `src/components/`: komponenty `.astro` wielokrotnego użytku
+- `src/layouts/`: szablony layoutów Astro
+- `src/pages/`: trasy stron Astro (lista `index.astro`, `game/[id].astro`, `404.astro`, `about.astro`)
+- `src/styles/`: CSS i konfiguracja Tailwind
+- `src/types/`: interfejsy TypeScript (Game, Publisher, Category)
+- `e2e-tests/`: testy E2E Playwright (strona główna, gry, dostępność)
+- `drizzle.config.ts`, `vitest.config.ts`, `astro.config.mjs`, `playwright.config.ts`: konfiguracja narzędzi
+- `README.md`: dokumentacja projektu
 
-## Language
+## Język
 
-Respond to the user in Polish. Keep all code, identifiers, comments, commit
-messages, branch names, and pull request titles in English.
+Odpowiadaj po polsku. Po polsku pisz też wszystko, co czyta człowiek: napisy
+w interfejsie, dane przykładowe, komentarze w kodzie, opisy testów (`describe`,
+`it`, `test.step`), komunikaty commitów, nazwy pull requestów. Identyfikatory
+w kodzie (nazwy funkcji, zmiennych, typów, plików, kolumn, `data-testid`)
+i nazwy gałęzi zostają po angielsku.

@@ -17,9 +17,9 @@ function makeGame(overrides: Partial<Game> = {}): Game {
     return {
         id: 1,
         title: 'Merge Conflict',
-        description: 'A co-op game about resolving conflicts.',
+        description: 'Kooperacyjna gra o rozwiązywaniu konfliktów.',
         starRating: 4.5,
-        category: { id: 1, name: 'Strategy' },
+        category: { id: 1, name: 'Strategia' },
         publisher: { id: 1, name: 'Rebase Games' },
         ...overrides,
     };
@@ -33,22 +33,22 @@ function containsNull(value: unknown): boolean {
 }
 
 describe('toCatalogExport', () => {
-    it('maps a game to a flattened catalog entry', () => {
+    it('mapuje grę na spłaszczony wpis katalogu', () => {
         const exported: CatalogExport = toCatalogExport([makeGame()]);
 
         expect(exported.gameCount).toBe(1);
         expect(exported.games[0]).toEqual({
             id: 1,
             title: 'Merge Conflict',
-            description: 'A co-op game about resolving conflicts.',
-            category: 'Strategy',
+            description: 'Kooperacyjna gra o rozwiązywaniu konfliktów.',
+            category: 'Strategia',
             publisher: 'Rebase Games',
             starRating: 4.5,
             ratingLabel: '★★★★½',
         });
     });
 
-    it('sorts games by title regardless of input order', () => {
+    it('sortuje gry po tytule niezależnie od kolejności na wejściu', () => {
         const exported = toCatalogExport([
             makeGame({ id: 2, title: 'Zero Downtime' }),
             makeGame({ id: 3, title: 'Async Await' }),
@@ -62,10 +62,11 @@ describe('toCatalogExport', () => {
         ]);
     });
 
-    it('sorts by ordinal code unit, not locale-aware alphabetical order', () => {
-        // Uppercase code units precede lowercase; accented characters sort after
-        // plain ASCII. This locks in the deterministic (non-`localeCompare`)
-        // comparator so it can't silently regress back to a locale-sensitive sort.
+    it('sortuje porządkowo po jednostkach kodowych, nie alfabetycznie wg locale', () => {
+        // Wielkie litery mają niższe kody niż małe, a znaki diakrytyczne sortują
+        // się za zwykłym ASCII. Ten test utrwala deterministyczny komparator
+        // (bez `localeCompare`), żeby nikt po cichu nie wrócił do sortowania
+        // zależnego od locale.
         const exported = toCatalogExport([
             makeGame({ id: 1, title: 'alpha' }),
             makeGame({ id: 2, title: 'Zebra' }),
@@ -81,60 +82,60 @@ describe('toCatalogExport', () => {
         ]);
     });
 
-    it('breaks ties between identical titles by id', () => {
+    it('rozstrzyga remisy między identycznymi tytułami po id', () => {
         const exported = toCatalogExport([
-            makeGame({ id: 3, title: 'Same Title' }),
-            makeGame({ id: 1, title: 'Same Title' }),
-            makeGame({ id: 2, title: 'Same Title' }),
+            makeGame({ id: 3, title: 'Ten sam tytuł' }),
+            makeGame({ id: 1, title: 'Ten sam tytuł' }),
+            makeGame({ id: 2, title: 'Ten sam tytuł' }),
         ]);
 
         expect(exported.games.map((game) => game.id)).toEqual([1, 2, 3]);
     });
 
-    it('lists distinct categories and publishers alphabetically', () => {
+    it('wypisuje unikalne kategorie i wydawców alfabetycznie', () => {
         const exported = toCatalogExport([
-            makeGame({ id: 1, category: { id: 2, name: 'Puzzle' }, publisher: { id: 2, name: 'Stack Overflow Studios' } }),
-            makeGame({ id: 2, title: 'Second', category: { id: 1, name: 'Strategy' }, publisher: { id: 1, name: 'Rebase Games' } }),
-            makeGame({ id: 3, title: 'Third', category: { id: 1, name: 'Strategy' }, publisher: { id: 1, name: 'Rebase Games' } }),
+            makeGame({ id: 1, category: { id: 2, name: 'Akcja' }, publisher: { id: 2, name: 'Stack Overflow Studios' } }),
+            makeGame({ id: 2, title: 'Druga', category: { id: 1, name: 'Strategia' }, publisher: { id: 1, name: 'Rebase Games' } }),
+            makeGame({ id: 3, title: 'Trzecia', category: { id: 1, name: 'Strategia' }, publisher: { id: 1, name: 'Rebase Games' } }),
         ]);
 
-        expect(exported.categories).toEqual(['Puzzle', 'Strategy']);
+        expect(exported.categories).toEqual(['Akcja', 'Strategia']);
         expect(exported.publishers).toEqual(['Rebase Games', 'Stack Overflow Studios']);
     });
 
-    it('sorts distinct categories/publishers by ordinal code unit', () => {
+    it('sortuje unikalne kategorie i wydawców porządkowo po jednostkach kodowych', () => {
         const exported = toCatalogExport([
             makeGame({ id: 1, category: { id: 1, name: 'zeta' }, publisher: { id: 1, name: 'zeta' } }),
-            makeGame({ id: 2, title: 'Second', category: { id: 2, name: 'Zeta' }, publisher: { id: 2, name: 'Zeta' } }),
-            makeGame({ id: 3, title: 'Third', category: { id: 3, name: 'Ínca' }, publisher: { id: 3, name: 'Ínca' } }),
+            makeGame({ id: 2, title: 'Druga', category: { id: 2, name: 'Zeta' }, publisher: { id: 2, name: 'Zeta' } }),
+            makeGame({ id: 3, title: 'Trzecia', category: { id: 3, name: 'Ínca' }, publisher: { id: 3, name: 'Ínca' } }),
         ]);
 
         expect(exported.categories).toEqual(['Zeta', 'zeta', 'Ínca']);
         expect(exported.publishers).toEqual(['Zeta', 'zeta', 'Ínca']);
     });
 
-    it('substitutes placeholders for missing relations and omits absent ratings', () => {
+    it('wstawia zastępniki za brakujące relacje i pomija brakującą ocenę', () => {
         const exported = toCatalogExport([
             makeGame({ category: null, publisher: null, starRating: null }),
         ]);
 
         const [game] = exported.games;
-        expect(game.category).toBe('Uncategorized');
-        expect(game.publisher).toBe('Unknown publisher');
+        expect(game.category).toBe('Bez kategorii');
+        expect(game.publisher).toBe('Nieznany wydawca');
         expect(game.starRating).toBeUndefined();
-        expect(game.ratingLabel).toBe('Not yet rated');
+        expect(game.ratingLabel).toBe('Brak oceny');
     });
 
-    it('never emits null values', () => {
+    it('nigdy nie emituje wartości null', () => {
         const exported = toCatalogExport([
             makeGame(),
-            makeGame({ id: 2, title: 'Nulls Everywhere', category: null, publisher: null, starRating: null }),
+            makeGame({ id: 2, title: 'Same nulle', category: null, publisher: null, starRating: null }),
         ]);
 
         expect(containsNull(exported)).toBe(false);
     });
 
-    it('returns an empty catalog for an empty database', () => {
+    it('zwraca pusty katalog dla pustej bazy', () => {
         const exported = toCatalogExport([]);
 
         expect(exported.gameCount).toBe(0);
@@ -143,8 +144,8 @@ describe('toCatalogExport', () => {
         expect(exported.publishers).toEqual([]);
     });
 
-    it('is deterministic for the same input', () => {
-        const games = [makeGame({ id: 2, title: 'Beta' }), makeGame({ id: 1, title: 'Alpha' })];
+    it('jest deterministyczna dla tego samego wejścia', () => {
+        const games = [makeGame({ id: 2, title: 'Beta' }), makeGame({ id: 1, title: 'Alfa' })];
 
         expect(serializeCatalogExport(toCatalogExport(games))).toBe(
             serializeCatalogExport(toCatalogExport(games)),
@@ -153,7 +154,7 @@ describe('toCatalogExport', () => {
 });
 
 describe('serializeCatalogExport', () => {
-    it('produces indented JSON with a trailing newline', () => {
+    it('produkuje JSON z wcięciami i końcowym znakiem nowej linii', () => {
         const output = serializeCatalogExport(toCatalogExport([makeGame()]));
 
         expect(output.endsWith('}\n')).toBe(true);
@@ -169,20 +170,20 @@ describe('writeCatalogExport', () => {
         if (tempDir) rmSync(tempDir, { recursive: true, force: true });
     });
 
-    it('reads the database and writes the returned catalog to a nested path', async () => {
+    it('czyta bazę i zapisuje zwrócony katalog do zagnieżdżonej ścieżki', async () => {
         const db: Database = await createTestDatabase();
         const [category] = await db
             .insert(categories)
-            .values({ name: 'Strategy', description: 'cat' })
+            .values({ name: 'Strategia', description: 'kat' })
             .returning({ id: categories.id });
         const [publisher] = await db
             .insert(publishers)
-            .values({ name: 'Rebase Games', description: 'pub' })
+            .values({ name: 'Rebase Games', description: 'wyd' })
             .returning({ id: publishers.id });
 
         await db.insert(games).values({
             title: 'Merge Conflict',
-            description: 'A co-op game about resolving conflicts.',
+            description: 'Kooperacyjna gra o rozwiązywaniu konfliktów.',
             starRating: 4.5,
             categoryId: category.id,
             publisherId: publisher.id,

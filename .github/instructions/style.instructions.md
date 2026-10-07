@@ -1,54 +1,54 @@
 ---
-description: 'Tailwind CSS v4 styling patterns and dark theme guidelines'
+description: 'Wzorce stylowania Tailwind CSS v4 i wytyczne ciemnego motywu'
 applyTo: '**/*.{astro,css}'
 ---
 
-# Tailwind CSS Instructions
+# Instrukcje dla Tailwind CSS
 
-## Tailwind CSS v4 Configuration
+## Konfiguracja Tailwind CSS v4
 
-This project uses Tailwind CSS v4.1.14 via the `@tailwindcss/vite` plugin.
+Projekt używa Tailwind CSS v4.1.14 przez wtyczkę `@tailwindcss/vite`.
 
-### Global CSS Setup
+### Konfiguracja globalnego CSS
 
-- Import Tailwind in `global.css`: `@import "tailwindcss";`
-- No separate `tailwind.config.js` file is used
-- Configuration is handled through the Vite plugin
+- Importuj Tailwind w `global.css`: `@import "tailwindcss";`
+- Nie używamy osobnego pliku `tailwind.config.js`
+- Konfiguracja odbywa się przez wtyczkę Vite
 
-## Dark Theme Styling
+## Stylowanie w ciemnym motywie
 
-ALL UI components MUST use dark theme colors:
+WSZYSTKIE komponenty UI MUSZĄ używać kolorów ciemnego motywu:
 
-### Color Palette
+### Paleta kolorów
 
-- Background colors: `bg-slate-800`, `bg-slate-900`, `bg-slate-950`
-- Text colors: `text-slate-100`, `text-slate-200`, `text-slate-300`
-- Border colors: `border-slate-700`, `border-slate-600`
-- Accent colors for hover/focus states
+- Kolory tła: `bg-slate-800`, `bg-slate-900`, `bg-slate-950`
+- Kolory tekstu: `text-slate-100`, `text-slate-200`, `text-slate-300`
+- Kolory obramowań: `border-slate-700`, `border-slate-600`
+- Kolory akcentów dla stanów hover/fokusu
 
-### Common Patterns
+### Typowe wzorce
 
-- Cards and containers: `bg-slate-800 rounded-xl p-6 shadow-lg`
-- Hover effects: `hover:bg-slate-700 transition-colors duration-200`
-- Borders: `border border-slate-700`
-- Gradients for visual interest: `bg-gradient-to-br from-slate-800 to-slate-900`
-- Backdrop effects: `backdrop-blur-sm bg-slate-900/50`
+- Karty i kontenery: `bg-slate-800 rounded-xl p-6 shadow-lg`
+- Efekty hover: `hover:bg-slate-700 transition-colors duration-200`
+- Obramowania: `border border-slate-700`
+- Gradienty dla urozmaicenia wizualnego: `bg-gradient-to-br from-slate-800 to-slate-900`
+- Efekty tła (backdrop): `backdrop-blur-sm bg-slate-900/50`
 
-### Responsive Design
+### Responsywność
 
-- Use responsive prefixes: `sm:`, `md:`, `lg:`, `xl:`
-- Mobile-first approach
-- Ensure readability on all screen sizes
+- Używaj prefiksów responsywnych: `sm:`, `md:`, `lg:`, `xl:`
+- Podejście mobile-first
+- Zadbaj o czytelność na wszystkich rozmiarach ekranu
 
-## Utility Classes
+## Klasy narzędziowe
 
-- Prefer utility classes over custom CSS when possible
-- Use semantic grouping: layout, spacing, colors, typography
-- Keep utility combinations readable and maintainable
+- Gdy to możliwe, preferuj klasy narzędziowe zamiast własnego CSS
+- Grupuj je semantycznie: układ, odstępy, kolory, typografia
+- Dbaj o to, żeby kombinacje klas były czytelne i łatwe w utrzymaniu
 
-## Modern UI Patterns
+## Nowoczesne wzorce UI
 
-- Rounded corners: `rounded-lg`, `rounded-xl`, `rounded-2xl`
-- Smooth transitions: `transition-all duration-200 ease-in-out`
-- Shadows for depth: `shadow-md`, `shadow-lg`, `shadow-xl`
-- Focus states for accessibility: `focus:ring-2 focus:ring-blue-500`
+- Zaokrąglone rogi: `rounded-lg`, `rounded-xl`, `rounded-2xl`
+- Płynne przejścia: `transition-all duration-200 ease-in-out`
+- Cienie dla głębi: `shadow-md`, `shadow-lg`, `shadow-xl`
+- Stany fokusu dla dostępności: `focus:ring-2 focus:ring-blue-500`

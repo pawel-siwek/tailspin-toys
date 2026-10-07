@@ -1,22 +1,22 @@
 /**
- * Centralized type definitions for game-related data structures.
- * These interfaces describe the shape returned by the Drizzle data-access
- * helpers in `src/lib/games.ts` and consumed by Astro pages/components.
+ * Wspólne definicje typów dla danych o grach.
+ * Te interfejsy opisują kształt zwracany przez helpery dostępu do danych
+ * w `src/lib/games.ts` i używany przez strony oraz komponenty Astro.
  */
 
-/** Represents a game publisher (summary form used in listings). */
+/** Wydawca gry (skrócona postać używana na listach). */
 export interface Publisher {
     id: number;
     name: string;
 }
 
-/** Represents a game category (summary form used in listings). */
+/** Kategoria gry (skrócona postać używana na listach). */
 export interface Category {
     id: number;
     name: string;
 }
 
-/** Represents a game with its related category and publisher. */
+/** Gra wraz z powiązaną kategorią i wydawcą. */
 export interface Game {
     id: number;
     title: string;

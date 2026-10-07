@@ -1,19 +1,19 @@
 ---
-description: 'Astro component patterns for pages, layouts, components, and routing'
+description: 'Wzorce komponentów Astro dla stron, layoutów, komponentów i routingu'
 applyTo: '**/*.astro'
 ---
 
-# Astro Component Instructions
+# Instrukcje dla komponentów Astro
 
-## Astro Component Patterns
+## Wzorce komponentów Astro
 
-Astro handles everything in the UI: pages, layouts, components, routing, and content. The site is **fully prerendered** (`output: 'static'`) — there is no client-side UI framework and no separate API server. Pages read data **directly in frontmatter** at build time via the Drizzle/Node SQLite data-access helpers in `src/lib/`.
+Astro obsługuje całe UI: strony, layouty, komponenty, routing i treść. Witryna jest **w pełni prerenderowana** (`output: 'static'`), nie ma frameworka UI po stronie klienta ani osobnego serwera API. Strony czytają dane **bezpośrednio we frontmatterze** w czasie budowania, przez helpery dostępu do danych Drizzle/Node SQLite z `src/lib/`.
 
-### Component Structure
+### Struktura komponentu
 
 ```astro
 ---
-// Frontmatter: runs at build time (static output)
+// Frontmatter: wykonuje się w czasie budowania (wyjście statyczne)
 import Layout from '../layouts/Layout.astro';
 import GameCard from '../components/GameCard.astro';
 import { getDatabase } from '../lib/db';
@@ -32,14 +32,14 @@ const games = await getAllGames(getDatabase());
 </Layout>
 ```
 
-## Layouts
+## Layouty
 
-- Create reusable layout components in `src/layouts/`
-- Use `<slot />` for content injection
-- Include common elements: `<head>`, navigation, footer
-- Import global styles in layouts
+- Twórz layouty wielokrotnego użytku w `src/layouts/`
+- Używaj `<slot />` do wstawiania treści
+- Umieszczaj w nich wspólne elementy: `<head>`, nawigację, stopkę
+- Importuj globalne style w layoutach
 
-### Layout Example
+### Przykład layoutu
 
 ```astro
 ---
@@ -50,7 +50,7 @@ const { title } = Astro.props;
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
@@ -62,16 +62,16 @@ const { title } = Astro.props;
 </html>
 ```
 
-## Pages
+## Strony
 
-- Create pages in `src/pages/`
-- File-based routing: `src/pages/about.astro` → `/about`
-- Dynamic routes: `src/pages/game/[id].astro`
-- Provide a branded `src/pages/404.astro` — with static output, any URL with no generated page is a real 404.
+- Twórz strony w `src/pages/`
+- Routing oparty na plikach: `src/pages/about.astro` → `/about`
+- Trasy dynamiczne: `src/pages/game/[id].astro`
+- Dostarcz firmową stronę `src/pages/404.astro`: przy wyjściu statycznym każdy URL bez wygenerowanej strony to prawdziwy błąd 404.
 
-### Dynamic Routes (static output)
+### Trasy dynamiczne (wyjście statyczne)
 
-With `output: 'static'`, every dynamic route must enumerate its pages with `getStaticPaths()` and set `prerender = true`. Query data in frontmatter using the data-access helpers:
+Przy `output: 'static'` każda trasa dynamiczna musi wyliczyć swoje strony przez `getStaticPaths()` i ustawić `prerender = true`. Dane odpytuj we frontmatterze za pomocą helperów dostępu do danych:
 
 ```astro
 ---
@@ -91,32 +91,32 @@ const { id } = Astro.params;
 const game = await getGameById(getDatabase(), Number(id));
 ---
 
-<Layout title="Game Details - Tailspin Toys">
-  <!-- Game details -->
+<Layout title="Szczegóły gry - Tailspin Toys">
+  <!-- Szczegóły gry -->
 </Layout>
 ```
 
-## Data Access
+## Dostęp do danych
 
-- Build-time data comes from a local SQLite database via **Drizzle ORM + Node SQLite** (see [`drizzle.instructions.md`](drizzle.instructions.md)).
-- Import `getDatabase()` from `src/lib/db.ts` and the typed helpers from `src/lib/games.ts`.
-- The database must be migrated and seeded before `astro build`; the `prebuild` npm script (`db:setup`) handles this.
+- Dane w czasie budowania pochodzą z lokalnej bazy SQLite przez **Drizzle ORM + Node SQLite** (zob. [`drizzle.instructions.md`](drizzle.instructions.md)).
+- Importuj `getDatabase()` z `src/lib/db.ts` oraz typowane helpery z `src/lib/games.ts`.
+- Baza musi być zmigrowana i zasilona przed `astro build`; zajmuje się tym skrypt npm `prebuild` (`db:setup`).
 
-## Client Interactivity (rare)
+## Interaktywność po stronie klienta (rzadko)
 
-There is no Svelte/React layer. When a page genuinely needs client behaviour, add a scoped Astro `<script>` using standard DOM APIs. Prefer native interactive elements (`<button>`, `<a href>`) so keyboard and focus behaviour come for free.
+Nie ma warstwy Svelte/React. Gdy strona naprawdę potrzebuje zachowania po stronie klienta, dodaj lokalny (scoped) `<script>` Astro korzystający ze standardowych API DOM. Preferuj natywne elementy interaktywne (`<button>`, `<a href>`), żeby obsługę klawiatury i fokusu dostać za darmo.
 
 ## TypeScript
 
-- Use TypeScript for type-safe props
-- Define `Props` interface in frontmatter
-- Type component imports and helper return values
-- Run `npx astro sync` to (re)generate route/content types before linting or type-checking
-- `.astro` files are type-checked by `npm run typecheck:astro` (which runs `astro sync` then `astro check`), on the classic `typescript` package. The pure TypeScript in `db/`, `src/lib/`, and `src/types/` is type-checked separately by `npm run typecheck` (the native TS 7 compiler, `tsgo`), which does **not** process `.astro` files.
+- Używaj TypeScriptu dla bezpiecznie typowanych props
+- Definiuj interfejs `Props` we frontmatterze
+- Typuj importy komponentów i wartości zwracane przez helpery
+- Przed lintowaniem lub kontrolą typów uruchom `npx astro sync`, żeby (ponownie) wygenerować typy tras i treści
+- Pliki `.astro` sprawdza pod kątem typów `npm run typecheck:astro` (uruchamia `astro sync`, a potem `astro check`) na klasycznym pakiecie `typescript`. Czysty TypeScript w `db/`, `src/lib/` i `src/types/` jest sprawdzany osobno przez `npm run typecheck` (natywny kompilator TS 7, `tsgo`), który **nie** przetwarza plików `.astro`.
 
-## Best Practices
+## Dobre praktyki
 
-- Keep data fetching in frontmatter (build time); avoid client-side fetching
-- Minimize client-side JavaScript — the default is zero JS shipped
-- Import and use global CSS styles from layouts
-- Always include a `data-testid` on interactive elements (see `ui.instructions.md`)
+- Pobieranie danych trzymaj we frontmatterze (czas budowania); unikaj pobierania po stronie klienta
+- Minimalizuj JavaScript po stronie klienta: domyślnie nie wysyłamy żadnego JS
+- Importuj i używaj globalnych stylów CSS z layoutów
+- Zawsze dodawaj `data-testid` do elementów interaktywnych (zob. `ui.instructions.md`)

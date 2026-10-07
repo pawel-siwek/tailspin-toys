@@ -11,18 +11,18 @@ import {
 async function seedGames(db: Database, count: number): Promise<void> {
     const [category] = await db
         .insert(categories)
-        .values({ name: 'Strategy', description: 'cat' })
+        .values({ name: 'Strategia', description: 'kat' })
         .returning({ id: categories.id });
     const [publisher] = await db
         .insert(publishers)
-        .values({ name: 'Pub One', description: 'pub' })
+        .values({ name: 'Wydawca Jeden', description: 'wyd' })
         .returning({ id: publishers.id });
 
-    // Insert titles in reverse-alphabetical order to prove ordering is applied.
+    // Wstawiamy tytuły w odwrotnej kolejności alfabetycznej, żeby sprawdzić sortowanie.
     for (let i = count; i >= 1; i--) {
         await db.insert(games).values({
-            title: `Game ${String(i).padStart(2, '0')}`,
-            description: `Description ${i}`,
+            title: `Gra ${String(i).padStart(2, '0')}`,
+            description: `Opis ${i}`,
             starRating: 4.2,
             categoryId: category.id,
             publisherId: publisher.id,
@@ -30,36 +30,36 @@ async function seedGames(db: Database, count: number): Promise<void> {
     }
 }
 
-describe('games data-access helpers', () => {
+describe('helpery dostępu do danych o grach', () => {
     let db: Database;
 
     beforeEach(async () => {
         db = await createTestDatabase();
     });
 
-    it('returns all games ordered by title', async () => {
+    it('zwraca wszystkie gry posortowane po tytule', async () => {
         await seedGames(db, 3);
         const all = await getAllGames(db);
-        expect(all.map((g) => g.title)).toEqual(['Game 01', 'Game 02', 'Game 03']);
-        expect(all[0].category).toEqual({ id: expect.any(Number), name: 'Strategy' });
-        expect(all[0].publisher).toEqual({ id: expect.any(Number), name: 'Pub One' });
+        expect(all.map((g) => g.title)).toEqual(['Gra 01', 'Gra 02', 'Gra 03']);
+        expect(all[0].category).toEqual({ id: expect.any(Number), name: 'Strategia' });
+        expect(all[0].publisher).toEqual({ id: expect.any(Number), name: 'Wydawca Jeden' });
     });
 
-    it('returns all game ids ordered by title', async () => {
+    it('zwraca identyfikatory wszystkich gier posortowane po tytule', async () => {
         await seedGames(db, 3);
         const ids = await getAllGameIds(db);
         const all = await getAllGames(db);
         expect(ids).toEqual(all.map((g) => g.id));
     });
 
-    it('fetches a single game by id', async () => {
+    it('pobiera pojedynczą grę po id', async () => {
         await seedGames(db, 2);
         const ids = await getAllGameIds(db);
         const game = await getGameById(db, ids[0]);
-        expect(game?.title).toBe('Game 01');
+        expect(game?.title).toBe('Gra 01');
     });
 
-    it('returns null for a non-existent game', async () => {
+    it('zwraca null dla nieistniejącej gry', async () => {
         await seedGames(db, 2);
         expect(await getGameById(db, 99999)).toBeNull();
     });

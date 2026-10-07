@@ -1,37 +1,37 @@
 ---
-description: 'Vitest unit test guidelines for the Astro + Drizzle/Node SQLite data layer'
+description: 'Wytyczne testów jednostkowych Vitest dla warstwy danych Astro + Drizzle/Node SQLite'
 applyTo: '**/*.test.ts'
 ---
 
-# Unit Testing Guidelines (Vitest + Drizzle/Node SQLite)
+# Wytyczne testów jednostkowych (Vitest + Drizzle/Node SQLite)
 
-Unit tests run with **Vitest** (`npm run test:unit`). They cover the two highest-value, framework-free layers:
+Testy jednostkowe działają na **Vitest** (`npm run test:unit`). Pokrywają dwie najcenniejsze warstwy niezależne od frameworka:
 
-1. **Pure transforms** (`db/transforms.ts`) — CSV parsing, description building, de-duplication, deterministic ratings.
-2. **Data-access helpers** (`src/lib/games.ts`) — ordering, lookups — exercised against a real in-memory **Node SQLite** database.
+1. **Czyste transformacje** (`db/transforms.ts`): parsowanie CSV, budowanie opisów, usuwanie duplikatów, deterministyczne oceny.
+2. **Helpery dostępu do danych** (`src/lib/games.ts`): sortowanie, wyszukiwanie, testowane na prawdziwej bazie **Node SQLite** w pamięci.
 
 > [!IMPORTANT]
-> Keep tests independent of the Astro runtime. Helpers accept an **injectable `db`** argument; tests pass an in-memory database, pages pass the real client. Never start an Astro server to unit test data logic.
+> Testy muszą być niezależne od środowiska uruchomieniowego Astro. Helpery przyjmują **wstrzykiwany argument `db`**; testy przekazują bazę w pamięci, strony przekazują prawdziwego klienta. Nigdy nie uruchamiaj serwera Astro, żeby przetestować jednostkowo logikę danych.
 
-## File Structure
+## Struktura plików
 
-- Co-locate tests next to the code: `transforms.test.ts` beside `transforms.ts`, `games.test.ts` beside `games.ts`.
-- Name pattern: `<module>.test.ts`.
-- Use `describe('<module / function>')` blocks and `it('does X when Y')` cases.
-- Add type annotations on helpers and fixtures — this codebase requires explicit types.
+- Testy umieszczaj obok kodu: `transforms.test.ts` obok `transforms.ts`, `games.test.ts` obok `games.ts`.
+- Wzorzec nazw: `<modul>.test.ts`.
+- Używaj bloków `describe('<moduł / funkcja>')` i przypadków `it('robi X, gdy Y')`.
+- Dodawaj adnotacje typów do helperów i fixture'ów; ten projekt wymaga jawnych typów.
 
-## Testing Pure Transforms
+## Testowanie czystych transformacji
 
-- No database needed — import the function and assert on its output.
-- Cover: happy path, empty/whitespace input, rows with missing optional fields, de-duplication, and **determinism** (e.g. `ratingFromTitle` returns the same value for the same title and stays within 3.0–5.0).
-- Prefer table-driven cases with `it.each` for input/output matrices.
+- Baza nie jest potrzebna: zaimportuj funkcję i sprawdź jej wynik.
+- Pokryj: ścieżkę pozytywną, puste wejście lub same białe znaki, wiersze z brakującymi polami opcjonalnymi, usuwanie duplikatów oraz **determinizm** (np. `ratingFromTitle` zwraca tę samą wartość dla tego samego tytułu i mieści się w zakresie 3.0–5.0).
+- Dla macierzy wejście/wyjście preferuj przypadki tabelaryczne z `it.each`.
 
 ```ts
 import { describe, it, expect } from 'vitest';
 import { ratingFromTitle } from './transforms';
 
 describe('ratingFromTitle', () => {
-  it('is deterministic and within range', () => {
+  it('jest deterministyczny i mieści się w zakresie', () => {
     const a = ratingFromTitle('Code Quest');
     const b = ratingFromTitle('Code Quest');
     expect(a).toBe(b);
@@ -41,11 +41,11 @@ describe('ratingFromTitle', () => {
 });
 ```
 
-## Testing Data-Access Helpers
+## Testowanie helperów dostępu do danych
 
-- Build a fresh in-memory database per test with the shared helper `createTestDatabase()` (`db/test-helpers.ts`), which runs migrations on a `:memory:` Node SQLite client.
-- Seed only the fixtures the test needs, then call the helper with that `db`.
-- Always assert the cheap thing first (counts, totals, ordering) before deep object shape.
+- Dla każdego testu buduj świeżą bazę w pamięci wspólnym helperem `createTestDatabase()` (`db/test-helpers.ts`), który uruchamia migracje na kliencie Node SQLite `:memory:`.
+- Zasilaj bazę tylko tymi fixture'ami, których test potrzebuje, a potem wywołaj helper z tym `db`.
+- Zawsze najpierw sprawdzaj to, co tanie (liczności, sumy, kolejność), a dopiero potem szczegółowy kształt obiektów.
 
 ```ts
 import { describe, it, expect, beforeEach } from 'vitest';
@@ -57,10 +57,10 @@ describe('getAllGames', () => {
 
   beforeEach(async () => {
     db = await createTestDatabase();
-    // …seed publishers, categories, games…
+    // …zasil wydawców, kategorie i gry…
   });
 
-  it('returns games ordered by title with their relations', async () => {
+  it('zwraca gry posortowane po tytule wraz z relacjami', async () => {
     const games = await getAllGames(db);
     const titles = games.map((g) => g.title);
     expect(titles).toEqual([...titles].sort());
@@ -69,18 +69,18 @@ describe('getAllGames', () => {
 });
 ```
 
-## Required Coverage
+## Wymagane pokrycie
 
-- Success cases with valid data
-- Not-found cases (`getGameById` for a missing id returns `null`)
-- Empty database/collection scenarios
-- Ordering guarantees (alphabetical by title) — static builds depend on this being deterministic
-- Determinism of seed-derived values
+- Przypadki pozytywne z poprawnymi danymi
+- Przypadki braku danych (`getGameById` dla nieistniejącego id zwraca `null`)
+- Scenariusze z pustą bazą/kolekcją
+- Gwarancje kolejności (alfabetycznie po tytule); statyczne buildy polegają na jej determinizmie
+- Determinizm wartości wyprowadzanych z seeda
 
-## Best Practices
+## Dobre praktyki
 
-- Follow Arrange-Act-Assert.
-- One behaviour per `it`; avoid asserting unrelated things in a single case.
-- Don't mock the database — an in-memory Node SQLite instance is fast and exercises real SQL/joins.
-- Keep fixtures minimal but representative of relationships (game → publisher, game → category).
-- If a schema change breaks tests, regenerate migrations with `npm run db:generate` and update fixtures.
+- Stosuj schemat Arrange-Act-Assert.
+- Jedno zachowanie na `it`; nie sprawdzaj niepowiązanych rzeczy w jednym przypadku.
+- Nie mockuj bazy danych: instancja Node SQLite w pamięci jest szybka i wykonuje prawdziwy SQL wraz ze złączeniami.
+- Fixture'y trzymaj minimalne, ale reprezentatywne dla relacji (gra → wydawca, gra → kategoria).
+- Jeśli zmiana schematu psuje testy, wygeneruj migracje ponownie przez `npm run db:generate` i zaktualizuj fixture'y.

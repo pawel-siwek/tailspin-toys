@@ -1,49 +1,49 @@
-name: Bug Report
-description: Report a bug or unexpected behavior
+name: Zgłoszenie błędu
+description: Zgłoś błąd lub nieoczekiwane zachowanie
 labels: ["bug"]
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to report a bug! Please fill out the information below so we can investigate.
+        Dziękujemy, że poświęcasz czas na zgłoszenie błędu! Wypełnij poniższe informacje, żebyśmy mogli to zbadać.
   - type: textarea
     id: description
     attributes:
-      label: Describe the bug
-      description: A clear and concise description of what the bug is.
+      label: Opisz błąd
+      description: Jasny i zwięzły opis tego, na czym polega błąd.
     validations:
       required: true
   - type: textarea
     id: steps
     attributes:
-      label: Steps to reproduce
-      description: Steps to reproduce the behavior.
+      label: Kroki do odtworzenia
+      description: Kroki pozwalające odtworzyć zachowanie.
       placeholder: |
-        1. Go to '...'
-        2. Click on '...'
-        3. See error
+        1. Przejdź do '...'
+        2. Kliknij '...'
+        3. Pojawia się błąd
     validations:
       required: true
   - type: textarea
     id: expected
     attributes:
-      label: Expected behavior
-      description: What did you expect to happen?
+      label: Oczekiwane zachowanie
+      description: Czego się spodziewałeś(-aś)?
     validations:
       required: true
   - type: textarea
     id: screenshots
     attributes:
-      label: Screenshots
-      description: If applicable, add screenshots to help explain the problem.
+      label: Zrzuty ekranu
+      description: Jeśli to pomoże, dodaj zrzuty ekranu ilustrujące problem.
   - type: textarea
     id: environment
     attributes:
-      label: Environment
-      description: Please provide relevant environment details.
+      label: Środowisko
+      description: Podaj istotne szczegóły środowiska.
       placeholder: |
-        - OS: [e.g. macOS 15, Windows 11]
-        - Browser: [e.g. Chrome 130, Safari 18]
-        - Node.js version: [e.g. 20.x]
+        - System operacyjny: [np. macOS 15, Windows 11]
+        - Przeglądarka: [np. Chrome 130, Safari 18]
+        - Wersja Node.js: [np. 20.x]
     validations:
       required: true

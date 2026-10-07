@@ -1,31 +1,31 @@
-Thanks for helping make GitHub safe for everyone.
+Dziękujemy, że pomagasz dbać o bezpieczeństwo GitHuba dla wszystkich.
 
-## Security
+## Bezpieczeństwo
 
-GitHub takes the security of our software products and services seriously, including all of the open source code repositories managed through our GitHub organizations, such as [GitHub](https://github.com/GitHub).
+GitHub poważnie traktuje bezpieczeństwo swoich produktów i usług, w tym wszystkich repozytoriów open source zarządzanych przez nasze organizacje na GitHubie, takie jak [GitHub](https://github.com/GitHub).
 
-Even though [open source repositories are outside of the scope of our bug bounty program](https://bounty.github.com/index.html#scope) and therefore not eligible for bounty rewards, we will ensure that your finding gets passed along to the appropriate maintainers for remediation. 
+Mimo że [repozytoria open source nie wchodzą w zakres naszego programu bug bounty](https://bounty.github.com/index.html#scope) i w związku z tym nie kwalifikują się do nagród, zadbamy o to, aby Twoje odkrycie trafiło do właściwych opiekunów w celu usunięcia problemu. 
 
-## Reporting Security Issues
+## Zgłaszanie problemów bezpieczeństwa
 
-If you believe you have found a security vulnerability in any GitHub-owned repository, please report it to us through coordinated disclosure.
+Jeśli uważasz, że znalazłeś(-aś) lukę bezpieczeństwa w którymkolwiek repozytorium należącym do GitHuba, zgłoś ją nam w ramach skoordynowanego ujawniania.
 
-**Please do not report security vulnerabilities through public GitHub issues, discussions, or pull requests.**
+**Nie zgłaszaj luk bezpieczeństwa przez publiczne zgłoszenia (issues), dyskusje ani pull requesty na GitHubie.**
 
-Instead, please send an email to opensource-security[@]github.com.
+Zamiast tego wyślij e-mail na adres opensource-security[@]github.com.
 
-Please include as much of the information listed below as you can to help us better understand and resolve the issue:
+Podaj jak najwięcej z poniższych informacji, aby pomóc nam lepiej zrozumieć i rozwiązać problem:
 
-  * The type of issue (e.g., buffer overflow, SQL injection, or cross-site scripting)
-  * Full paths of source file(s) related to the manifestation of the issue
-  * The location of the affected source code (tag/branch/commit or direct URL)
-  * Any special configuration required to reproduce the issue
-  * Step-by-step instructions to reproduce the issue
-  * Proof-of-concept or exploit code (if possible)
-  * Impact of the issue, including how an attacker might exploit the issue
+  * Rodzaj problemu (np. przepełnienie bufora, SQL injection lub cross-site scripting)
+  * Pełne ścieżki plików źródłowych związanych z wystąpieniem problemu
+  * Lokalizację dotkniętego kodu źródłowego (tag/gałąź/commit lub bezpośredni URL)
+  * Wszelką specjalną konfigurację wymaganą do odtworzenia problemu
+  * Instrukcje odtworzenia problemu krok po kroku
+  * Kod proof-of-concept lub exploit (jeśli to możliwe)
+  * Wpływ problemu, w tym sposób, w jaki atakujący mógłby go wykorzystać
 
-This information will help us triage your report more quickly.
+Te informacje pomogą nam szybciej przeprowadzić triage zgłoszenia.
 
-## Policy
+## Polityka
 
-See [GitHub's Safe Harbor Policy](https://docs.github.com/en/github/site-policy/github-bug-bounty-program-legal-safe-harbor#1-safe-harbor-terms)
+Zobacz [politykę Safe Harbor GitHuba](https://docs.github.com/en/github/site-policy/github-bug-bounty-program-legal-safe-harbor#1-safe-harbor-terms)

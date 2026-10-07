@@ -1,13 +1,13 @@
-# Support
+# Wsparcie
 
-## How to file issues and get help
+## Jak zgłaszać problemy i uzyskać pomoc
 
-This project uses GitHub issues to track bugs and feature requests. Please search the existing issues before filing new issues to avoid duplicates. For new issues, file your bug or feature request as a new issue.
+Ten projekt śledzi błędy i propozycje funkcji za pomocą zgłoszeń (issues) na GitHubie. Zanim założysz nowe zgłoszenie, przeszukaj istniejące, aby uniknąć duplikatów. Nowy błąd lub propozycję funkcji zgłoś jako nowe zgłoszenie.
 
-For help or questions about using this project, please [file an issue](https://github.com/pawel-siwek/tailspin-toys/issues).
+Jeśli potrzebujesz pomocy lub masz pytania dotyczące korzystania z projektu, [załóż zgłoszenie](https://github.com/pawel-siwek/tailspin-toys/issues).
 
-**Tailspin Toys** is a sample/template project maintained by GitHub staff and the community. We will do our best to respond to support, feature requests, and community questions in a timely manner.
+**Tailspin Toys** to przykładowy projekt/szablon utrzymywany przez pracowników GitHuba i społeczność. Dołożymy wszelkich starań, aby na prośby o wsparcie, propozycje funkcji i pytania społeczności odpowiadać w rozsądnym czasie.
 
-## GitHub Support Policy
+## Polityka wsparcia GitHub
 
-Support for this project is limited to the resources listed above.
+Wsparcie dla tego projektu ogranicza się do zasobów wymienionych powyżej.

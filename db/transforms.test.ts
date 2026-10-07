@@ -12,23 +12,23 @@ import {
 } from './transforms';
 
 describe('parseCsv', () => {
-    it('parses quoted fields containing commas', () => {
-        const rows = parseCsv('A,B\n"hello, world","x"');
-        expect(rows).toEqual([{ A: 'hello, world', B: 'x' }]);
+    it('parsuje pola w cudzysłowach zawierające przecinki', () => {
+        const rows = parseCsv('A,B\n"witaj, świecie","x"');
+        expect(rows).toEqual([{ A: 'witaj, świecie', B: 'x' }]);
     });
 
-    it('handles escaped double quotes', () => {
-        const rows = parseCsv('A\n"she said ""hi"""');
-        expect(rows[0].A).toBe('she said "hi"');
+    it('obsługuje podwojone cudzysłowy', () => {
+        const rows = parseCsv('A\n"powiedziała ""cześć"""');
+        expect(rows[0].A).toBe('powiedziała "cześć"');
     });
 
-    it('handles newlines inside quoted fields', () => {
-        const rows = parseCsv('A,B\n"line1\nline2","y"');
-        expect(rows[0].A).toBe('line1\nline2');
+    it('obsługuje znaki nowej linii wewnątrz pól w cudzysłowach', () => {
+        const rows = parseCsv('A,B\n"linia1\nlinia2","y"');
+        expect(rows[0].A).toBe('linia1\nlinia2');
         expect(rows[0].B).toBe('y');
     });
 
-    it('returns an empty array for empty input', () => {
+    it('zwraca pustą tablicę dla pustego wejścia', () => {
         expect(parseCsv('')).toEqual([]);
     });
 });
@@ -36,70 +36,70 @@ describe('parseCsv', () => {
 describe('parseGamesCsv', () => {
     const csv = [
         'Title,Category,Publisher,Description',
-        '"Game A","Strategy","Pub One","Desc A"',
-        '"Game B","Strategy","Pub Two","Desc B"',
-        '', // trailing blank line should be ignored
+        '"Gra A","Strategia","Wydawca Jeden","Opis A"',
+        '"Gra B","Strategia","Wydawca Dwa","Opis B"',
+        '', // końcowa pusta linia ma być zignorowana
     ].join('\n');
 
-    it('maps rows to typed game records', () => {
+    it('mapuje wiersze na otypowane rekordy gier', () => {
         const rows = parseGamesCsv(csv);
         expect(rows).toHaveLength(2);
         expect(rows[0]).toEqual({
-            title: 'Game A',
-            category: 'Strategy',
-            publisher: 'Pub One',
-            description: 'Desc A',
+            title: 'Gra A',
+            category: 'Strategia',
+            publisher: 'Wydawca Jeden',
+            description: 'Opis A',
         });
     });
 
-    it('skips rows without a title', () => {
+    it('pomija wiersze bez tytułu', () => {
         const rows = parseGamesCsv('Title,Category,Publisher,Description\n,,,');
         expect(rows).toHaveLength(0);
     });
 });
 
-describe('description helpers', () => {
-    it('builds a category description', () => {
-        expect(categoryDescription('Strategy')).toBe(
-            'Collection of Strategy games available for crowdfunding',
+describe('helpery opisów', () => {
+    it('buduje opis kategorii', () => {
+        expect(categoryDescription('Strategia')).toBe(
+            'Gry z kategorii Strategia dostępne w crowdfundingu',
         );
     });
 
-    it('builds a publisher description', () => {
+    it('buduje opis wydawcy', () => {
         expect(publisherDescription('CodeForge')).toBe(
-            'CodeForge is a game publisher seeking funding for exciting new titles',
+            'CodeForge to wydawca gier szukający finansowania na nowe tytuły',
         );
     });
 
-    it('appends the crowdfunding blurb to a game description', () => {
-        expect(gameDescription('A great game.')).toBe(
-            'A great game. Support this game through our crowdfunding platform!',
+    it('dokleja zdanie o crowdfundingu do opisu gry', () => {
+        expect(gameDescription('Świetna gra.')).toBe(
+            'Świetna gra. Wesprzyj tę grę na naszej platformie crowdfundingowej!',
         );
     });
 });
 
-describe('dedupe helpers', () => {
+describe('helpery usuwające duplikaty', () => {
     const rows: GameCsvRow[] = [
-        { title: 'A', category: 'Strategy', publisher: 'P1', description: '' },
-        { title: 'B', category: 'Puzzle', publisher: 'P1', description: '' },
-        { title: 'C', category: 'Strategy', publisher: 'P2', description: '' },
+        { title: 'A', category: 'Strategia', publisher: 'W1', description: '' },
+        { title: 'B', category: 'Łamigłówki', publisher: 'W1', description: '' },
+        { title: 'C', category: 'Strategia', publisher: 'W2', description: '' },
     ];
 
-    it('returns distinct categories in first-seen order', () => {
-        expect(uniqueCategories(rows)).toEqual(['Strategy', 'Puzzle']);
+    it('zwraca unikalne kategorie w kolejności pierwszego wystąpienia', () => {
+        expect(uniqueCategories(rows)).toEqual(['Strategia', 'Łamigłówki']);
     });
 
-    it('returns distinct publishers in first-seen order', () => {
-        expect(uniquePublishers(rows)).toEqual(['P1', 'P2']);
+    it('zwraca unikalnych wydawców w kolejności pierwszego wystąpienia', () => {
+        expect(uniquePublishers(rows)).toEqual(['W1', 'W2']);
     });
 });
 
 describe('ratingFromTitle', () => {
-    it('is deterministic for the same title', () => {
+    it('jest deterministyczna dla tego samego tytułu', () => {
         expect(ratingFromTitle('DevOps Dominion')).toBe(ratingFromTitle('DevOps Dominion'));
     });
 
-    it('stays within the inclusive range [3.0, 5.0]', () => {
+    it('mieści się w domkniętym zakresie [3.0, 5.0]', () => {
         for (const title of ['A', 'Pipeline Conquest', 'zzz', 'Server Siege', '']) {
             const rating = ratingFromTitle(title);
             expect(rating).toBeGreaterThanOrEqual(3.0);
@@ -107,8 +107,8 @@ describe('ratingFromTitle', () => {
         }
     });
 
-    it('produces at most one decimal place', () => {
-        const rating = ratingFromTitle('Some Title');
+    it('daje co najwyżej jedno miejsce po przecinku', () => {
+        const rating = ratingFromTitle('Jakiś tytuł');
         expect(Math.round(rating * 10)).toBeCloseTo(rating * 10, 5);
     });
 });
