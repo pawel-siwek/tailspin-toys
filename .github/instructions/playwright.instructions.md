@@ -1,60 +1,60 @@
 ---
-description: 'Playwright test generation instructions'
+description: 'Instrukcje generowania testów Playwright'
 applyTo: '**/*.spec.ts'
 ---
 
-# Test Writing Guidelines
+# Wytyczne pisania testów
 
-## Code Quality Standards
+## Standardy jakości kodu
 
-- **Locators**: Prioritize user-facing, role-based locators (`getByRole`, `getByLabel`, `getByText`, etc.) for resilience and accessibility. Use `test.step()` to group interactions and improve test readability and reporting.
-- **Timeouts**: Rely solely on Playwright's built-in auto-waiting mechanisms. NEVER use hard-coded waits such as `waitForTimeout`, increased default timeouts, or `waitForLoadState`.
-- **Assertions**: Use auto-retrying web-first assertions. These assertions start with the `await` keyword (e.g., `await expect(locator).toHaveText()`). Prefer assertions that verify meaningful state — `toHaveText`, `toContainText`, `toHaveCount`, `toMatchAriaSnapshot`, `toHaveURL` — over a bare `toBeVisible()` when you actually care about content or structure. `toBeVisible()` is a valid auto-retrying assertion and is appropriate for genuine presence/visibility checks; just don't reach for it when a more specific assertion better expresses the intent.
-- **Clarity**: Use descriptive test and step titles that clearly state the intent. Add comments only to explain complex logic or non-obvious interactions.
+- **Lokatory**: Stawiaj na lokatory zorientowane na użytkownika, oparte na rolach (`getByRole`, `getByLabel`, `getByText` itd.), bo są odporne na zmiany i wspierają dostępność. Używaj `test.step()` do grupowania interakcji, żeby poprawić czytelność testów i raportów.
+- **Limity czasu**: Polegaj wyłącznie na wbudowanym mechanizmie automatycznego oczekiwania Playwright. NIGDY nie używaj sztywnych opóźnień takich jak `waitForTimeout`, podwyższonych domyślnych limitów czasu ani `waitForLoadState`.
+- **Asercje**: Używaj asercji web-first z automatycznym ponawianiem. Zaczynają się od słowa kluczowego `await` (np. `await expect(locator).toHaveText()`). Preferuj asercje weryfikujące istotny stan (`toHaveText`, `toContainText`, `toHaveCount`, `toMatchAriaSnapshot`, `toHaveURL`) zamiast gołego `toBeVisible()`, gdy naprawdę zależy ci na treści lub strukturze. `toBeVisible()` to poprawna asercja z automatycznym ponawianiem i nadaje się do rzeczywistego sprawdzania obecności/widoczności; nie sięgaj po nią tylko wtedy, gdy bardziej precyzyjna asercja lepiej wyraża intencję.
+- **Czytelność**: Używaj opisowych tytułów testów i kroków, które jasno określają intencję. Komentarze dodawaj tylko po to, żeby wyjaśnić złożoną logikę lub nieoczywiste interakcje.
 
-## Test Structure
+## Struktura testu
 
-- **Imports**: Start with `import { test, expect } from '@playwright/test';`.
-- **Organization**: Group related tests for a feature under a `test.describe()` block.
-- **Hooks**: Use `beforeEach` for setup actions common to all tests in a `describe` block (e.g., navigating to a page).
-- **Titles**: Follow a clear naming convention, such as `Feature - Specific action or scenario`.
-
-
-## File Organization
-
-- **Location**: Store all test files in the `e2e-tests/` directory.
-- **Naming**: Use the convention `<feature-or-page>.spec.ts` (e.g., `login.spec.ts`, `search.spec.ts`).
-- **Scope**: Aim for one test file per major application feature or page.
-
-## Assertion Best Practices
-
-- **UI Structure**: Use `toMatchAriaSnapshot` to verify the accessibility tree structure of a component. This provides a comprehensive and accessible snapshot.
-- **Element Counts**: Use `toHaveCount` to assert the number of elements found by a locator.
-- **Text Content**: Use `toHaveText` for exact text matches and `toContainText` for partial matches.
-- **Navigation**: Use `toHaveURL` to verify the page URL after an action.
+- **Importy**: Zaczynaj od `import { test, expect } from '@playwright/test';`.
+- **Organizacja**: Powiązane testy jednej funkcjonalności grupuj w bloku `test.describe()`.
+- **Hooki**: Używaj `beforeEach` do czynności przygotowawczych wspólnych dla wszystkich testów w bloku `describe` (np. przejścia na stronę).
+- **Tytuły**: Trzymaj się czytelnej konwencji nazewnictwa, np. `Funkcjonalność - Konkretna akcja lub scenariusz`.
 
 
-## Example Test Structure
+## Organizacja plików
+
+- **Lokalizacja**: Wszystkie pliki testów trzymaj w katalogu `e2e-tests/`.
+- **Nazewnictwo**: Stosuj konwencję `<funkcjonalnosc-lub-strona>.spec.ts` (np. `login.spec.ts`, `search.spec.ts`).
+- **Zakres**: Dąż do jednego pliku testów na każdą główną funkcjonalność lub stronę aplikacji.
+
+## Dobre praktyki asercji
+
+- **Struktura UI**: Używaj `toMatchAriaSnapshot` do weryfikacji struktury drzewa dostępności komponentu. Daje to kompletny i dostępny zrzut.
+- **Liczba elementów**: Używaj `toHaveCount` do sprawdzania liczby elementów znalezionych przez lokator.
+- **Treść tekstowa**: Używaj `toHaveText` do dokładnego dopasowania tekstu i `toContainText` do dopasowania częściowego.
+- **Nawigacja**: Używaj `toHaveURL` do weryfikacji adresu URL strony po wykonaniu akcji.
+
+
+## Przykładowa struktura testu
 
 ```typescript
 import { test, expect } from '@playwright/test';
 
-test.describe('Movie Search Feature', () => {
+test.describe('Wyszukiwanie filmów', () => {
   test.beforeEach(async ({ page }) => {
-    // Navigate to the application before each test
+    // Przed każdym testem przejdź do aplikacji
     await page.goto('https://debs-obrien.github.io/playwright-movies-app');
   });
 
-  test('Search for a movie by title', async ({ page }) => {
-    await test.step('Activate and perform search', async () => {
+  test('Wyszukuje film po tytule', async ({ page }) => {
+    await test.step('Aktywuj i wykonaj wyszukiwanie', async () => {
       await page.getByRole('search').click();
       const searchInput = page.getByRole('textbox', { name: 'Search Input' });
       await searchInput.fill('Garfield');
       await searchInput.press('Enter');
     });
 
-    await test.step('Verify search results', async () => {
-      // Verify the accessibility tree of the search results
+    await test.step('Zweryfikuj wyniki wyszukiwania', async () => {
+      // Zweryfikuj drzewo dostępności wyników wyszukiwania
       await expect(page.getByRole('main')).toMatchAriaSnapshot(`
         - main:
           - heading "Garfield" [level=1]
@@ -71,22 +71,22 @@ test.describe('Movie Search Feature', () => {
 });
 ```
 
-## Authoring & Iteration Strategy
+## Strategia pisania i iteracji
 
 > [!NOTE]
-> This file covers how specs should be written. To *run* the E2E suite, use `npm run test:e2e`.
+> Ten plik opisuje, jak pisać specyfikacje testów. Żeby *uruchomić* zestaw testów E2E, użyj `npm run test:e2e`.
 
-1. **Run**: Execute the suite with `npm run test:e2e`.
-2. **Debug Failures**: Analyze test failures and identify root causes.
-3. **Iterate**: Refine locators, assertions, or test logic as needed, re-running the suite.
-4. **Validate**: Ensure tests pass consistently and cover the intended functionality.
-5. **Report**: Provide feedback on test results and any issues discovered.
+1. **Uruchom**: Wykonaj zestaw testów poleceniem `npm run test:e2e`.
+2. **Zdiagnozuj błędy**: Przeanalizuj nieudane testy i znajdź przyczyny źródłowe.
+3. **Iteruj**: W razie potrzeby dopracuj lokatory, asercje lub logikę testów i uruchom zestaw ponownie.
+4. **Zweryfikuj**: Upewnij się, że testy przechodzą stabilnie i pokrywają zamierzoną funkcjonalność.
+5. **Zaraportuj**: Przekaż informację o wynikach testów i wszelkich wykrytych problemach.
 
-## Quality Checklist
+## Lista kontrolna jakości
 
-Before finalizing tests, ensure:
-- [ ] All locators are accessible and specific and do not use strict mode violations
-- [ ] Tests are grouped logically and follow a clear structure
-- [ ] Assertions are meaningful and reflect user expectations
-- [ ] Tests follow consistent naming conventions
-- [ ] Code is properly formatted and commented
+Zanim uznasz testy za gotowe, upewnij się, że:
+- [ ] Wszystkie lokatory są dostępne i precyzyjne oraz nie naruszają trybu ścisłego (strict mode)
+- [ ] Testy są pogrupowane logicznie i mają czytelną strukturę
+- [ ] Asercje są znaczące i odzwierciedlają oczekiwania użytkownika
+- [ ] Testy stosują spójną konwencję nazewnictwa
+- [ ] Kod jest poprawnie sformatowany i skomentowany

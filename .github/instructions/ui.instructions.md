@@ -1,70 +1,70 @@
 ---
-description: 'Central UI strategy and component development philosophy'
+description: 'Centralna strategia UI i filozofia tworzenia komponentów'
 ---
 
-# UI Component Strategy
+# Strategia komponentów UI
 
-This file defines the central UI development strategy for Tailspin Toys. Technology-specific guidance is in separate instruction files.
+Ten plik definiuje centralną strategię rozwoju UI dla Tailspin Toys. Wskazówki dotyczące konkretnych technologii znajdują się w osobnych plikach instrukcji.
 
-## Component Architecture
+## Architektura komponentów
 
-### Technology Separation
+### Podział technologii
 
-- **Astro** (`.astro` files): Pages, layouts, components, routing, and static content. The site is fully prerendered (`output: 'static'`), so components render to HTML at build time.
-- **Tailwind CSS** (utility classes): Styling
-- **Astro `<script>`**: Reach for a small client-side script only when genuine interactivity is required — there is no client-side UI framework.
+- **Astro** (pliki `.astro`): strony, layouty, komponenty, routing i treść statyczna. Witryna jest w pełni prerenderowana (`output: 'static'`), więc komponenty renderują się do HTML w czasie budowania.
+- **Tailwind CSS** (klasy narzędziowe): stylowanie
+- **`<script>` Astro**: Po niewielki skrypt po stronie klienta sięgaj tylko wtedy, gdy interaktywność jest naprawdę potrzebna; nie ma frameworka UI po stronie klienta.
 
-Refer to technology-specific instruction files:
-- [`astro.instructions.md`](astro.instructions.md) - Astro pages, layouts, and components
-- [`style.instructions.md`](style.instructions.md) - Tailwind CSS styling patterns
+Pliki instrukcji dla konkretnych technologii:
+- [`astro.instructions.md`](astro.instructions.md) - strony, layouty i komponenty Astro
+- [`style.instructions.md`](style.instructions.md) - wzorce stylowania Tailwind CSS
 
-## Core Principles
+## Podstawowe zasady
 
-### Testability
+### Testowalność
 
-- Every interactive element MUST include a `data-testid` attribute
-- Use descriptive test IDs that identify the element's purpose and context
-- Examples: `data-testid="game-card-{game.id}"`, `data-testid="submit-button"`, `data-testid="nav-home"`
+- Każdy element interaktywny MUSI mieć atrybut `data-testid`
+- Używaj opisowych identyfikatorów testowych, które określają przeznaczenie i kontekst elementu
+- Przykłady: `data-testid="game-card-{game.id}"`, `data-testid="submit-button"`, `data-testid="nav-home"`
 
-### Accessibility
+### Dostępność
 
-- Use semantic HTML elements (`<nav>`, `<main>`, `<article>`, `<button>`)
-- Provide ARIA labels and roles where semantic HTML isn't sufficient
-- Use plain `<nav>` with `<a>`/`<button>` elements for site navigation — do **not** add `role="menu"`. Reserve `role="menu"` / `role="menuitem"` for true application-style menus that implement full composite keyboard semantics (arrow-key roving focus, Home/End, type-ahead)
-- Loading states should use `role="status"` and `aria-live="polite"` for screen reader announcements
-- Include Escape key handlers for dismissible elements (menus, modals)
-- Ensure keyboard navigation works for all interactive elements, with proper focus management
-- Include visible focus states: `focus:ring-2 focus:ring-blue-500 focus:outline-none`
-- Maintain sufficient color contrast (especially in dark theme)
+- Używaj semantycznych elementów HTML (`<nav>`, `<main>`, `<article>`, `<button>`)
+- Tam, gdzie semantyczny HTML nie wystarcza, dodawaj etykiety i role ARIA
+- Do nawigacji po witrynie używaj zwykłego `<nav>` z elementami `<a>`/`<button>`; **nie** dodawaj `role="menu"`. Zarezerwuj `role="menu"` / `role="menuitem"` dla prawdziwych menu aplikacyjnych, które implementują pełną złożoną semantykę klawiatury (przenoszenie fokusu strzałkami, Home/End, wyszukiwanie przez wpisywanie)
+- Stany ładowania powinny używać `role="status"` i `aria-live="polite"`, żeby czytniki ekranu je ogłaszały
+- Dodawaj obsługę klawisza Escape do elementów zamykanych (menu, okna modalne)
+- Zadbaj o działającą nawigację klawiaturą dla wszystkich elementów interaktywnych, z poprawnym zarządzaniem fokusem
+- Dodawaj widoczne stany fokusu: `focus:ring-2 focus:ring-blue-500 focus:outline-none`
+- Utrzymuj wystarczający kontrast kolorów (zwłaszcza w ciemnym motywie)
 
-### Design Consistency
+### Spójność projektu
 
-- Dark theme throughout the application
-- Modern, clean UI with rounded corners and smooth transitions
-- Consistent spacing and visual hierarchy
-- Responsive design that works on mobile, tablet, and desktop
+- Ciemny motyw w całej aplikacji
+- Nowoczesne, czyste UI z zaokrąglonymi rogami i płynnymi przejściami
+- Spójne odstępy i hierarchia wizualna
+- Responsywny układ działający na telefonie, tablecie i komputerze
 
-### Component Reusability
+### Komponenty wielokrotnego użytku
 
-- Create reusable components for common UI patterns
-- Keep components focused on a single responsibility
-- Use props for configuration, not duplication
-- Document component APIs with TypeScript types
+- Twórz komponenty wielokrotnego użytku dla typowych wzorców UI
+- Każdy komponent powinien mieć jedną odpowiedzialność
+- Konfiguruj przez props, zamiast powielać kod
+- Dokumentuj API komponentów typami TypeScript
 
-## Development Workflow
+## Przebieg pracy
 
-1. **Choose the right tool**: 
-   - Content & structure → Astro components/pages
-   - Styling → Tailwind
-   - Client interactivity (rare) → a scoped Astro `<script>`
+1. **Wybierz właściwe narzędzie**: 
+   - Treść i struktura → komponenty/strony Astro
+   - Stylowanie → Tailwind
+   - Interaktywność po stronie klienta (rzadko) → lokalny (scoped) `<script>` Astro
 
-2. **Follow technology-specific patterns**: 
-   - Refer to the appropriate instruction file
+2. **Stosuj wzorce właściwe dla technologii**: 
+   - Sięgnij do odpowiedniego pliku instrukcji
 
-3. **Ensure testability**: 
-   - Add `data-testid` to all interactive elements
+3. **Zapewnij testowalność**: 
+   - Dodaj `data-testid` do wszystkich elementów interaktywnych
 
-4. **Verify accessibility**: 
-   - Test keyboard navigation
-   - Check focus states
-   - Validate semantic structure
+4. **Zweryfikuj dostępność**: 
+   - Przetestuj nawigację klawiaturą
+   - Sprawdź stany fokusu
+   - Zweryfikuj strukturę semantyczną

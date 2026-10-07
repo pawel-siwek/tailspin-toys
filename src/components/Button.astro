@@ -2,15 +2,15 @@
 import type { HTMLAttributes } from 'astro/types';
 
 interface Props extends Omit<HTMLAttributes<'button'>, 'type'> {
-    /** Visual style of the button. */
+    /** Wariant wizualny przycisku. */
     variant?: 'solid' | 'gradient';
-    /** Padding scale. */
+    /** Skala odstępów wewnętrznych. */
     size?: 'sm' | 'md';
-    /** When provided, renders an anchor (`<a>`) instead of a `<button>`. */
+    /** Gdy podane, renderuje link (`<a>`) zamiast `<button>`. */
     href?: string;
-    /** Button type when rendered as a `<button>`. */
+    /** Typ przycisku, gdy renderowany jako `<button>`. */
     type?: 'button' | 'submit' | 'reset';
-    /** Stretch the button to fill its container. */
+    /** Rozciąga przycisk na całą szerokość kontenera. */
     fullWidth?: boolean;
 }
 

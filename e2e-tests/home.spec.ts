@@ -1,27 +1,24 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Home Page', () => {
+test.describe('Strona główna', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
   });
 
-  test('should display the correct title', async ({ page }) => {
-    // Check that the page title is correct
-    await expect(page).toHaveTitle('Tailspin Toys - Crowdfunding your new favorite game!');
+  test('wyświetla poprawny tytuł strony', async ({ page }) => {
+    await expect(page).toHaveTitle('Tailspin Toys - Wesprzyj swoją nową ulubioną grę!');
   });
 
-  test('should display the main heading', async ({ page }) => {
-    // Check that the main page heading is present
-    await expect(page.getByRole('heading', { name: 'Welcome to Tailspin Toys', exact: true })).toBeVisible();
+  test('wyświetla główny nagłówek', async ({ page }) => {
+    await expect(page.getByRole('heading', { name: 'Witaj w Tailspin Toys', exact: true })).toBeVisible();
   });
 
-  test('should display the site branding in header', async ({ page }) => {
-    // Check that the site branding is present in the header (no longer an h1)
+  test('wyświetla nazwę serwisu w nagłówku strony', async ({ page }) => {
+    // Nazwa serwisu jest w nagłówku (to już nie jest h1)
     await expect(page.getByText('Tailspin Toys').first()).toBeVisible();
   });
 
-  test('should display the welcome message', async ({ page }) => {
-    // Check that the welcome message is present using more specific locator
-    await expect(page.getByText('Find your next game! And maybe even back one! Explore our collection!')).toBeVisible();
+  test('wyświetla hasło powitalne', async ({ page }) => {
+    await expect(page.getByText('Znajdź swoją następną grę. A może nawet ją wesprzesz? Przejrzyj naszą kolekcję!')).toBeVisible();
   });
 });

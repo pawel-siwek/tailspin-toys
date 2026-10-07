@@ -1,36 +1,36 @@
 ---
 name: quality-checks
-description: Runs this project's unit tests (Vitest), lint (ESLint), and type checks (tsgo + astro check), with guidance for debugging failures before commits, pushes, or merges. Use this skill when running npm run test:unit, npm run lint, or npm run typecheck:all.
+description: Uruchamia testy jednostkowe (Vitest), lint (ESLint) i kontrolę typów (tsgo + astro check) tego projektu oraz podpowiada, jak debugować błędy przed commitem, pushem lub merge'em. Używaj tego skilla przy uruchamianiu npm run test:unit, npm run lint lub npm run typecheck:all.
 allowed-tools:
   - shell
 ---
 
-# Quality Checks
+# Kontrole jakości
 
-This skill runs unit tests, lint, and type checks for a single Astro application (Astro 7 + Drizzle ORM/Node SQLite). Run the npm commands defined in `package.json` from the repository root.
+Ten skill uruchamia testy jednostkowe, lint i kontrolę typów dla pojedynczej aplikacji Astro (Astro 7 + Drizzle ORM/Node SQLite). Komendy npm zdefiniowane w `package.json` uruchamiaj z katalogu głównego repozytorium.
 
-## Quick Reference
+## Skrót
 
-| Check | Command | When to Use |
+| Kontrola | Komenda | Kiedy używać |
 |------------|----------------------------|-------------|
-| Unit tests (Vitest) | `npm run test:unit` | After any data-layer / transform / helper change |
-| Lint (ESLint) | `npm run lint` | After any TypeScript or Astro change |
-| Type check (tsgo + astro check) | `npm run typecheck:all` | After any TypeScript or Astro change |
+| Testy jednostkowe (Vitest) | `npm run test:unit` | Po każdej zmianie w warstwie danych / transformacjach / helperach |
+| Lint (ESLint) | `npm run lint` | Po każdej zmianie w plikach TypeScript lub Astro |
+| Kontrola typów (tsgo + astro check) | `npm run typecheck:all` | Po każdej zmianie w plikach TypeScript lub Astro |
 
-All commands assume dependencies are installed (`npm ci`).
+Wszystkie komendy zakładają, że zależności są zainstalowane (`npm ci`).
 
 ---
 
-## Running Unit Tests, Lint, and Type Checks
+## Uruchamianie testów jednostkowych, lintu i kontroli typów
 
-### Unit Tests
+### Testy jednostkowe
 
 ```bash
 npm run test:unit
 ```
 
-- Runs Vitest (`vitest run`) over `db/**/*.test.ts` and `src/**/*.test.ts`.
-- Covers the pure seed/transform functions and the Drizzle data-access helpers against an in-memory Node SQLite database.
+- Uruchamia Vitest (`vitest run`) dla plików `db/**/*.test.ts` i `src/**/*.test.ts`.
+- Obejmuje czyste funkcje seedu/transformacji oraz helpery dostępu do danych Drizzle, testowane na bazie Node SQLite w pamięci.
 
 ### Lint
 
@@ -38,60 +38,60 @@ npm run test:unit
 npm run lint
 ```
 
-- Runs ESLint on all TypeScript and Astro files in the project.
-- Must pass with zero errors before committing.
+- Uruchamia ESLint dla wszystkich plików TypeScript i Astro w projekcie.
+- Przed commitem musi przejść bez żadnego błędu.
 
-### Type check
+### Kontrola typów
 
 ```bash
 npm run typecheck:all
 ```
 
-- `npm run typecheck` runs the native **TypeScript 7** compiler (`tsgo`, from `@typescript/native-preview`) over the pure TypeScript (`db/`, `src/lib/`, `src/types/`, configs, tests) via `tsconfig.tsgo.json` (`--noEmit`).
-- `npm run typecheck:astro` runs `astro sync` then `astro check` over `.astro` files (on the classic `typescript` package).
-- Type checking is independent of linting — `tsgo` does not affect ESLint, which still uses the classic `typescript` package. Both must pass with zero errors before committing.
+- `npm run typecheck` uruchamia natywny kompilator **TypeScript 7** (`tsgo` z pakietu `@typescript/native-preview`) dla czystego TypeScriptu (`db/`, `src/lib/`, `src/types/`, konfiguracje, testy) na podstawie `tsconfig.tsgo.json` (`--noEmit`).
+- `npm run typecheck:astro` uruchamia `astro sync`, a następnie `astro check` dla plików `.astro` (na klasycznym pakiecie `typescript`).
+- Kontrola typów jest niezależna od lintowania: `tsgo` nie wpływa na ESLint, który nadal korzysta z klasycznego pakietu `typescript`. Oba muszą przejść bez żadnego błędu przed commitem.
 
 ---
 
-## Debugging & Troubleshooting
+## Debugowanie i rozwiązywanie problemów
 
-### Environment / Setup Failures
+### Błędy środowiska / konfiguracji
 
-**Symptom**: `command not found`, missing modules, or `Cannot find package`.
+**Objaw**: `command not found`, brakujące moduły albo `Cannot find package`.
 
 ```bash
 npm ci
 ```
 
-- Ensure Node 22.13+ is available: `node --version`.
-- Run `npx astro sync` if editor/type errors reference missing generated Astro types.
+- Upewnij się, że dostępny jest Node 22.13+: `node --version`.
+- Uruchom `npx astro sync`, jeśli błędy edytora lub typów odwołują się do brakujących wygenerowanych typów Astro.
 
 ---
 
-### Database / Build-Time Data
+### Baza danych / dane w czasie budowania
 
-**Symptom**: Empty pages, `no such table`, or a build that produces no game pages.
+**Objaw**: puste strony, `no such table` albo build, który nie generuje stron gier.
 
-The SQLite database must be migrated and seeded **before** `astro build`. The `prebuild` and `predev` npm hooks run the TypeScript migration and seed tasks in `db/` automatically when you use `npm run build` or `npm run dev`. To set up the database on its own:
+Baza SQLite musi zostać zmigrowana i zasilona (seed) **przed** `astro build`. Hooki npm `prebuild` i `predev` automatycznie uruchamiają zadania migracji i seedu napisane w TypeScript z katalogu `db/`, gdy używasz `npm run build` lub `npm run dev`. Aby skonfigurować bazę osobno:
 
 ```bash
 npm run db:setup     # db:migrate + db:seed
 ```
 
-- The database lives at `tailspin.db` (gitignored) and is regenerated from `db/games.csv`.
-- To force a clean rebuild: `rm -f tailspin.db && rm -rf dist && npm run build`.
+- Baza znajduje się w pliku `tailspin.db` (ignorowanym przez git) i jest odtwarzana z `db/games.csv`.
+- Aby wymusić czysty rebuild: `rm -f tailspin.db && rm -rf dist && npm run build`.
 
 ---
 
-### Unit Test Failures
+### Błędy testów jednostkowych
 
-**Symptom**: Assertion failures in `npm run test:unit`.
+**Objaw**: niespełnione asercje w `npm run test:unit`.
 
-1. **Read the failing assertion** — Vitest prints expected vs received inline.
-2. **In-memory database**: Helper tests build a fresh `:memory:` Node SQLite database, run migrations, and seed fixtures per test. If a schema change isn't reflected, regenerate migrations with `npm run db:generate`.
-3. **Determinism**: Star ratings are derived from a stable hash of the title (`ratingFromTitle`) — never `Math.random`. A flaky rating assertion usually means non-deterministic data crept in.
+1. **Przeczytaj niespełnioną asercję**: Vitest wypisuje wartość oczekiwaną i otrzymaną w jednym miejscu.
+2. **Baza w pamięci**: testy helperów tworzą dla każdego testu świeżą bazę Node SQLite `:memory:`, uruchamiają migracje i zasilają ją danymi testowymi. Jeśli zmiana schematu nie jest odzwierciedlona, wygeneruj migracje ponownie przez `npm run db:generate`.
+3. **Determinizm**: oceny gwiazdkowe są wyliczane ze stabilnego hasha tytułu (`ratingFromTitle`), nigdy z `Math.random`. Niestabilna asercja na ocenie zwykle oznacza, że do danych wkradła się niedeterministyczność.
 
-Run a single file:
+Uruchomienie pojedynczego pliku:
 
 ```bash
 npx vitest run src/lib/games.test.ts
@@ -99,46 +99,46 @@ npx vitest run src/lib/games.test.ts
 
 ---
 
-### Lint Failures
+### Błędy lintu
 
-**Symptom**: ESLint errors from `npm run lint`.
+**Objaw**: błędy ESLint z `npm run lint`.
 
-1. **Auto-fix safe issues**: `npm run lint -- --fix`.
-2. **Unused vars**: Prefix intentionally-unused identifiers with `_`.
-3. **TypeScript type errors**: Add missing type annotations or correct incorrect types.
-4. **Remaining errors after `--fix`**: Resolve manually — do not suppress with `eslint-disable` without justification.
-
----
-
-### Local vs CI Divergence
-
-**Symptom**: Unit tests, lint, or type checks pass locally but fail in CI (or vice versa).
-
-- **Node version mismatch**: CI uses the current Node LTS release.
-- **Database state**: CI always builds from a clean seed. Locally, delete `tailspin.db` and rebuild if you suspect stale data.
+1. **Automatyczna poprawka bezpiecznych problemów**: `npm run lint -- --fix`.
+2. **Nieużywane zmienne**: celowo nieużywane identyfikatory poprzedź prefiksem `_`.
+3. **Błędy typów TypeScript**: dodaj brakujące adnotacje typów albo popraw niepoprawne typy.
+4. **Błędy pozostałe po `--fix`**: popraw ręcznie, nie wyciszaj ich przez `eslint-disable` bez uzasadnienia.
 
 ---
 
-## Verification Policy
+### Rozbieżności między środowiskiem lokalnym a CI
 
-### Unit Tests, Lint, and Type Checks Must Pass Before Commit/Merge
+**Objaw**: testy jednostkowe, lint lub kontrola typów przechodzą lokalnie, ale nie przechodzą w CI (albo odwrotnie).
 
-- All existing unit tests, lint, and type checks must pass before committing changes
-- Never skip or disable unit tests without explicit justification
-- Failing unit tests, lint, or type checks block merges — fix them, don't ignore them
-- Run the full unit test suite, not just tests for changed code
-- New functionality must ship with appropriate unit test coverage
+- **Niezgodność wersji Node**: CI używa bieżącego wydania Node LTS.
+- **Stan bazy danych**: CI zawsze buduje z czystego seedu. Lokalnie usuń `tailspin.db` i zbuduj ponownie, jeśli podejrzewasz nieaktualne dane.
+
+---
+
+## Zasady weryfikacji
+
+### Testy jednostkowe, lint i kontrola typów muszą przejść przed commitem/merge'em
+
+- Wszystkie istniejące testy jednostkowe, lint i kontrola typów muszą przejść przed commitem zmian
+- Nigdy nie pomijaj ani nie wyłączaj testów jednostkowych bez wyraźnego uzasadnienia
+- Niepowodzenie testów jednostkowych, lintu lub kontroli typów blokuje merge: napraw je, nie ignoruj
+- Uruchamiaj pełny zestaw testów jednostkowych, nie tylko testy zmienionego kodu
+- Nowa funkcjonalność musi być dostarczana z odpowiednim pokryciem testami jednostkowymi
 
 > [!NOTE]
-> This skill covers **running, verifying, and debugging** unit tests, lint, and type checks. For **how to author** unit test code — structure, fixtures, naming, and quality standards — follow the instructions files, which are the single source of truth:
-> - Unit tests (`**/*.test.ts`): [unit-tests.instructions.md](../../instructions/unit-tests.instructions.md)
+> Ten skill obejmuje **uruchamianie, weryfikację i debugowanie** testów jednostkowych, lintu i kontroli typów. Jeśli chodzi o **sposób pisania** kodu testów jednostkowych (struktura, dane testowe, nazewnictwo i standardy jakości), kieruj się plikami instrukcji, które są jedynym źródłem prawdy:
+> - Testy jednostkowe (`**/*.test.ts`): [unit-tests.instructions.md](../../instructions/unit-tests.instructions.md)
 
 ---
 
-## Pre-Commit Checklist
+## Lista kontrolna przed commitem
 
-1. Run lint (if any frontend files changed): `npm run lint`
-2. Run type check (if any TypeScript / Astro files changed): `npm run typecheck:all`
-3. Run unit tests (if data layer / helpers changed): `npm run test:unit`
-4. Verify new functionality has appropriate unit test coverage
-5. Confirm no unit tests were broken, skipped, or disabled
+1. Uruchom lint (jeśli zmieniły się jakiekolwiek pliki frontendu): `npm run lint`
+2. Uruchom kontrolę typów (jeśli zmieniły się jakiekolwiek pliki TypeScript / Astro): `npm run typecheck:all`
+3. Uruchom testy jednostkowe (jeśli zmieniła się warstwa danych / helpery): `npm run test:unit`
+4. Sprawdź, czy nowa funkcjonalność ma odpowiednie pokrycie testami jednostkowymi
+5. Potwierdź, że żadne testy jednostkowe nie zostały zepsute, pominięte ani wyłączone

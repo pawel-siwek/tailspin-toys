@@ -1,6 +1,6 @@
 name: "Copilot Setup Steps"
 
-# Allows you to test the setup steps from your repository's "Actions" tab
+# Pozwala przetestować kroki konfiguracji z zakładki „Actions" w repozytorium
 on: workflow_dispatch
 
 env:
@@ -9,28 +9,28 @@ env:
 jobs:
   copilot-setup-steps:
     runs-on: ubuntu-latest
-    # Set the permissions to the lowest permissions possible needed for *your steps*. Copilot will be given its own token for its operations.
+    # Ustaw najniższe uprawnienia potrzebne *Twoim krokom*. Copilot dostanie własny token na swoje operacje.
     permissions:
-      # If you want to clone the repository as part of your setup steps, for example to install dependencies, you'll need the `contents: read` permission. If you don't clone the repository in your setup steps, Copilot will do this for you automatically after the steps complete.
+      # Jeśli w krokach konfiguracji klonujesz repozytorium, np. żeby zainstalować zależności, potrzebujesz `contents: read`. Jeśli nie klonujesz, Copilot zrobi to sam po zakończeniu kroków.
       contents: read
     steps:
-      - name: Checkout code
+      - name: Pobierz kod
         uses: actions/checkout@v5
 
-      # Frontend / app setup - Node.js (the whole app is Astro + Drizzle/Node SQLite)
-      - name: Set up Node.js
+      # Konfiguracja aplikacji: Node.js (cała aplikacja to Astro + Drizzle/Node SQLite)
+      - name: Skonfiguruj Node.js
         uses: actions/setup-node@v6
         with:
           node-version: "lts/*"
           cache: "npm"
           cache-dependency-path: "./package-lock.json"
 
-      - name: Install JavaScript dependencies
+      - name: Zainstaluj zależności JavaScript
         run: npm ci
 
-      - name: Install Playwright browsers
+      - name: Zainstaluj przeglądarki Playwright
         run: npx playwright install --with-deps chromium
 
-      # Migrate + seed the local SQLite database so builds and tests have data.
-      - name: Set up the database
+      # Zmigruj i zasil lokalną bazę SQLite, żeby buildy i testy miały dane.
+      - name: Przygotuj bazę danych
         run: npm run db:setup

@@ -50,7 +50,7 @@ async function upsertPublishers(db: Database, names: string[]): Promise<Map<stri
     return map;
 }
 
-/** Seed the database from the games CSV. Idempotent: skips existing games by title. */
+/** Zasila bazę z CSV z grami. Idempotentne: pomija gry, które już są (po tytule). */
 export async function seedDatabase(db: Database, csvPath: string = join(here, 'games.csv')): Promise<void> {
     const rows = parseGamesCsv(readFileSync(csvPath, 'utf-8'));
 
@@ -72,18 +72,18 @@ export async function seedDatabase(db: Database, csvPath: string = join(here, 'g
     }
 }
 
-// Allow running directly: `tsx db/seed.ts`
-// pathToFileURL normalises Windows backslashes and slash count, making the
-// comparison safe on all platforms when invoked via `tsx db/seed.ts`.
+// Pozwala uruchomić bezpośrednio: `tsx db/seed.ts`
+// pathToFileURL normalizuje backslashe i liczbę ukośników na Windowsie, więc
+// porównanie działa na każdej platformie.
 if (import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
     const db = createDatabase();
     seedDatabase(db)
         .then(() => {
-            console.log('Database seeded.');
+            console.log('Baza zasilona.');
             process.exit(0);
         })
         .catch((error) => {
-            console.error('Seeding failed:', error);
+            console.error('Zasilanie bazy nie powiodło się:', error);
             process.exit(1);
         });
 }

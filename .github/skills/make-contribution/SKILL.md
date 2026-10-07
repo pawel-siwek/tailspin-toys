@@ -1,76 +1,76 @@
 ---
 name: make-contribution
-description: All changes to code must follow the guidance documented in the repository. Before any issue is filed, branch is made, commits generated, or pull request (or PR) created, a search must be done to ensure the right steps are followed. Whenever asked to create an issue, commit messages, to push code, or create a PR, use this skill so everything is done correctly.
+description: Wszystkie zmiany w kodzie muszą być zgodne z wytycznymi udokumentowanymi w repozytorium. Zanim zostanie założone zgłoszenie, utworzona gałąź, wygenerowane commity lub otwarty pull request (PR), trzeba przeszukać repozytorium, aby upewnić się, że wykonywane są właściwe kroki. Ilekroć masz utworzyć zgłoszenie, napisać komunikaty commitów, wypchnąć kod lub utworzyć PR, używaj tego skilla, żeby wszystko zostało zrobione poprawnie.
 ---
 
-# Contribution guidelines
+# Wytyczne dotyczące kontrybucji
 
-Most every project has a set of contribution guidelines everyone needs to follow when creating issues, pull requests (PR), or otherwise contributing code. These may include, but are not limited to:
+Prawie każdy projekt ma zestaw wytycznych dotyczących kontrybucji, których każdy musi przestrzegać przy tworzeniu zgłoszeń, pull requestów (PR) lub w inny sposób wnosząc kod. Mogą one obejmować między innymi:
 
-- Creating an issue before creating a PR, or creating the two in conjunction
-- Templates for issues or PRs that must be used depending on the change request being made
-- Guidelines on what needs to be documented in those issues and PRs
-- Tests, linters, and other prerequisites that need to be run before pushing any changes
+- Utworzenie zgłoszenia przed utworzeniem PR albo utworzenie obu jednocześnie
+- Szablony zgłoszeń lub PR, których trzeba użyć w zależności od rodzaju zmiany
+- Wytyczne co do tego, co należy udokumentować w tych zgłoszeniach i PR
+- Testy, lintery i inne wymagania wstępne, które trzeba uruchomić przed wypchnięciem zmian
 
-Always remember, you are a guest in someone else's repository. As such, you need to follow the rules and guidelines set forth by the repository owner when contributing code.
+Pamiętaj zawsze, że jesteś gościem w cudzym repozytorium. Dlatego wnosząc kod, musisz przestrzegać zasad i wytycznych ustalonych przez właściciela repozytorium.
 
-## Using existing guidelines
+## Korzystanie z istniejących wytycznych
 
-Before creating a PR or any of the steps leading up to it, explore the project to determine if there's any guidance. Places to explore include, but are not limited to:
+Zanim utworzysz PR lub wykonasz którykolwiek z kroków prowadzących do niego, przejrzyj projekt, aby sprawdzić, czy zawiera jakieś wytyczne. Miejsca, które warto sprawdzić, to między innymi:
 
 - README.md
 - CONTRIBUTING.md
-- Project documentation
-- Issue templates
-- Pull request or PR templates
+- Dokumentacja projektu
+- Szablony zgłoszeń
+- Szablony pull requestów (PR)
 
-If any of those exist or you discover documentation elsewhere in the repo, read through what you find, consider it, and follow the guidance to the best of your ability. If you have any questions or confusion, ask the user for input on how best to proceed. DO NOT create a PR until you're certain you've followed the practices.
+Jeśli którykolwiek z nich istnieje albo znajdziesz dokumentację w innym miejscu repozytorium, przeczytaj to, co znajdziesz, weź to pod uwagę i postępuj zgodnie z wytycznymi najlepiej, jak potrafisz. Jeśli masz pytania lub wątpliwości, poproś użytkownika o wskazówki, jak najlepiej postąpić. NIE twórz PR, dopóki nie masz pewności, że zastosowano się do przyjętych praktyk.
 
-## No guidelines found
+## Brak wytycznych
 
-If no guidance is found, or doesn't provide guidance on certain topics, then use the following as a foundation for creating a quality contribution. **ALWAYS** defer to the guidance provided in the repository.
+Jeśli nie znajdziesz żadnych wytycznych albo nie obejmują one pewnych tematów, użyj poniższych zasad jako podstawy do przygotowania dobrej jakości wkładu. **ZAWSZE** pierwszeństwo mają wytyczne zawarte w repozytorium.
 
-## Tasks
+## Zadania
 
-Many repository owners will have guidance on prerequisite steps which need to be completed before a PR is to be created. This can include, but is not limited to:
+Wielu właścicieli repozytoriów ma wytyczne co do kroków wstępnych, które trzeba wykonać przed utworzeniem PR. Mogą one obejmować między innymi:
 
-- building the project or generating assets
-- running linters and ensuring any issues are resolved
-- naming guidelines and other patterns
-- unit tests, end to end tests, or other tests which need to be created and pass
-  - related, there may be required coverage percentages
+- zbudowanie projektu lub wygenerowanie zasobów
+- uruchomienie linterów i upewnienie się, że wszystkie problemy zostały rozwiązane
+- wytyczne dotyczące nazewnictwa i inne wzorce
+- testy jednostkowe, testy end-to-end lub inne testy, które trzeba napisać i które muszą przejść
+  - w związku z tym mogą obowiązywać wymagane progi pokrycia
 
-Look through all guidance you find, and ensure any prerequisites have been satisfied.
+Przejrzyj wszystkie znalezione wytyczne i upewnij się, że wszystkie wymagania wstępne są spełnione.
 
-## Issue
+## Zgłoszenie
 
-Always start by looking to see if an issue exists that's related to the task at hand. This may have already been created by the user, or someone else. If you discover one, prompt the user to ensure they want to use that issue, or which one they may wish to use.
+Zawsze zaczynaj od sprawdzenia, czy istnieje zgłoszenie związane z bieżącym zadaniem. Mógł je już utworzyć użytkownik albo ktoś inny. Jeśli takie znajdziesz, zapytaj użytkownika, czy chce użyć tego zgłoszenia, a jeśli jest ich kilka, którego.
 
-If no issue is discovered, look through the guidance to see if creating an issue is a requirement. If it is, use the template provided in the repository. If there are multiple, choose the one that most aligns with the work being done. If there are any questions, ask the user which one to use.
+Jeśli nie znajdziesz zgłoszenia, sprawdź w wytycznych, czy jego utworzenie jest wymagane. Jeśli tak, użyj szablonu dostępnego w repozytorium. Jeśli jest ich kilka, wybierz ten, który najlepiej pasuje do wykonywanej pracy. W razie wątpliwości zapytaj użytkownika, którego użyć.
 
-If the requirement is to file an issue, but no issue template is provided, use [this issue template](./assets/issue-template.md) as a guide on what to file.
+Jeśli założenie zgłoszenia jest wymagane, ale repozytorium nie ma szablonu zgłoszenia, skorzystaj z [tego szablonu zgłoszenia](./assets/issue-template.md) jako wskazówki, co powinno się w nim znaleźć.
 
-## Branch
+## Gałąź
 
-Before performing any commits, ensure a branch has been created for the work. Follow whatever guidance is provided by the repository's documentation. If prefixes are defined, like `feature` or `chore`, or if the requirement is to use the username of the person making the PR, then use that. This branch must never be `main`, or the default branch, but should be a branch created specifically for the changes taking place. If no branch is already created, create a new one with a good name based on the changes being made and the guidance.
+Zanim wykonasz jakiekolwiek commity, upewnij się, że dla tej pracy została utworzona gałąź. Postępuj zgodnie z wytycznymi zawartymi w dokumentacji repozytorium. Jeśli zdefiniowano prefiksy, takie jak `feature` lub `chore`, albo wymagane jest użycie nazwy użytkownika osoby tworzącej PR, zastosuj się do tego. Tą gałęzią nigdy nie może być `main` ani gałąź domyślna; musi to być gałąź utworzona specjalnie dla wprowadzanych zmian. Jeśli gałąź jeszcze nie istnieje, utwórz nową z dobrą nazwą, opartą na wprowadzanych zmianach i wytycznych.
 
-## Commits
+## Commity
 
-When committing changes:
+Przy commitowaniu zmian:
 
-1. Review all changes
-2. Logically group the changes together
-3. Create short commit messages for each group, following any guidance in the repository
-4. Commit the grouped code to the branch.
+1. Przejrzyj wszystkie zmiany
+2. Pogrupuj zmiany logicznie
+3. Dla każdej grupy napisz krótki komunikat commita, zgodnie z wytycznymi repozytorium
+4. Zacommituj pogrupowany kod do gałęzi.
 
-## Merging
+## Merge
 
-**NEVER** merge to main unless explicitly instructed to do so by the user
+**NIGDY** nie merguj do main, chyba że użytkownik wyraźnie o to poprosi
 
 ## Pull request
 
-When creating a pull request, use existing templates in the repository if any exist, following the guidance you discovered.
+Tworząc pull request, użyj szablonów istniejących w repozytorium, jeśli jakieś są, i postępuj zgodnie ze znalezionymi wytycznymi.
 
-If no template is provided, use the [this PR template](./assets/pr-template.md). It contains a collection of headers to use, each with guidance of what to place in the particular sections.
+Jeśli szablonu nie ma, użyj [tego szablonu PR](./assets/pr-template.md). Zawiera on zestaw nagłówków wraz ze wskazówkami, co umieścić w poszczególnych sekcjach.
 
-If an issue was created or is being used, ensure that issue is referenced in the PR. Use the `Closes #NUMBER` syntax to enable auto-closing of the issue.
+Jeśli zgłoszenie zostało utworzone lub jest używane, upewnij się, że PR się do niego odwołuje. Użyj składni `Closes #NUMER`, aby zgłoszenie zamknęło się automatycznie.

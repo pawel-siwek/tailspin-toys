@@ -1,36 +1,36 @@
-# <!-- Provide a concise, descriptive title for the pull request -->
+# <!-- Podaj zwięzły, opisowy tytuł pull requesta -->
 
-## Summary
+## Podsumowanie
 
-<!-- Provide a three to four sentence description of what this PR accomplishes. -->
+<!-- Opisz w trzech lub czterech zdaniach, co ten PR realizuje. -->
 
-## Background
+## Tło
 
-<!-- Explain why this change is needed. Include:
-- The problem being solved or feature being added
-- Link to related issues (use "Closes #123" to auto-close)
-- Any relevant context or discussions
+<!-- Wyjaśnij, dlaczego ta zmiana jest potrzebna. Uwzględnij:
+- Rozwiązywany problem lub dodawaną funkcję
+- Link do powiązanych zgłoszeń (użyj "Closes #123", aby zamknąć je automatycznie)
+- Istotny kontekst lub dyskusje
 -->
 
-## Changes
+## Zmiany
 
-<!-- List the changes being made, logically grouped. Include:
-- Files added, modified, or deleted
-- Key code changes with brief explanations
-- Any architectural or design decisions made
+<!-- Wymień wprowadzane zmiany, pogrupowane logicznie. Uwzględnij:
+- Pliki dodane, zmodyfikowane lub usunięte
+- Kluczowe zmiany w kodzie z krótkim wyjaśnieniem
+- Podjęte decyzje architektoniczne lub projektowe
 -->
 
-## Testing
+## Testowanie
 
-<!-- Describe how the changes were validated:
-- Commands run (e.g., `npm run build`, `npm run validate`)
-- Manual testing performed
-- Edge cases considered
+<!-- Opisz, jak zweryfikowano zmiany:
+- Uruchomione komendy (np. `npm run build`, `npm run validate`)
+- Przeprowadzone testy ręczne
+- Rozważone przypadki brzegowe
 -->
 
-## Additional Notes
+## Dodatkowe uwagi
 
-<!-- Include any of the following if relevant:
-- Breaking changes or migration steps
-- Highlights for human reviewers
+<!-- Uwzględnij, jeśli to istotne:
+- Zmiany niekompatybilne wstecz lub kroki migracji
+- Rzeczy warte uwagi recenzentów
 -->

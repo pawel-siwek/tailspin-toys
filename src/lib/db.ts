@@ -13,12 +13,12 @@ export interface DatabaseConnection {
     sqlite: DatabaseSync;
 }
 
-/** Default local SQLite file used for dev/build when DATABASE_URL is unset. */
+/** Domyślny lokalny plik SQLite dla dev/build, gdy DATABASE_URL nie jest ustawione. */
 const DEFAULT_DATABASE_URL = 'file:tailspin.db';
 
 let cachedDb: Database | undefined;
 
-/** Resolve a local SQLite URL to the path expected by Node's built-in driver. */
+/** Zamienia lokalny URL SQLite na ścieżkę, jakiej oczekuje wbudowany sterownik Node. */
 function databasePath(url: string): string {
     if (url === ':memory:') {
         return url;
@@ -37,7 +37,7 @@ function databasePath(url: string): string {
     return filePath;
 }
 
-/** Bridge Drizzle's async SQLite adapter to Node's synchronous built-in driver. */
+/** Łączy asynchroniczny adapter SQLite Drizzle z synchronicznym wbudowanym sterownikiem Node. */
 function createRemoteCallback(sqlite: DatabaseSync): AsyncRemoteCallback {
     return async (sql: string, params: SQLInputValue[], method: 'run' | 'all' | 'values' | 'get') => {
         const statement = sqlite.prepare(sql);
@@ -52,14 +52,14 @@ function createRemoteCallback(sqlite: DatabaseSync): AsyncRemoteCallback {
                 return { rows: statement.all(...params).map((row) => Object.values(row)) };
             case 'get': {
                 const row = statement.get(...params);
-                // Drizzle's proxy type requires an array, but its get mapper accepts no row.
+                // Typ proxy Drizzle wymaga tablicy, ale jego mapper get akceptuje brak wiersza.
                 return { rows: row === undefined ? (undefined as unknown as never[]) : Object.values(row) };
             }
         }
     };
 }
 
-/** Run generated migration statements atomically through Node's SQLite driver. */
+/** Wykonuje wygenerowane instrukcje migracji atomowo przez sterownik SQLite Node. */
 export function executeMigrationQueries(sqlite: DatabaseSync, queries: string[]): void {
     sqlite.exec('BEGIN');
     try {
@@ -73,12 +73,12 @@ export function executeMigrationQueries(sqlite: DatabaseSync, queries: string[])
     }
 }
 
-/** Create a Drizzle client for the given local SQLite connection URL. */
+/** Tworzy klienta Drizzle dla podanego lokalnego URL połączenia SQLite. */
 export function createDatabase(url: string = process.env.DATABASE_URL ?? DEFAULT_DATABASE_URL): Database {
     return createDatabaseConnection(url).db;
 }
 
-/** Create the Drizzle client and its Node SQLite connection for migration workflows. */
+/** Tworzy klienta Drizzle i jego połączenie Node SQLite na potrzeby migracji. */
 export function createDatabaseConnection(
     url: string = process.env.DATABASE_URL ?? DEFAULT_DATABASE_URL,
 ): DatabaseConnection {
@@ -88,7 +88,7 @@ export function createDatabaseConnection(
     return { db, sqlite };
 }
 
-/** Shared singleton database client used by pages at build time. */
+/** Współdzielony singleton klienta bazy używany przez strony w czasie budowania. */
 export function getDatabase(): Database {
     if (!cachedDb) {
         cachedDb = createDatabase();

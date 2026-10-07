@@ -1,34 +1,34 @@
-name: Bootstrap template issues
+name: Załóż zgłoszenia startowe
 
-# GitHub has no native "created from template" event, so this workflow runs on
-# the first push to the default branch (creating a repo from a template makes an
-# initial commit, which fires this push). The is_template guard skips the
-# template repository itself, and the final step removes this workflow plus the
-# issue source folder so the whole thing runs exactly once on a new instance.
+# GitHub nie ma zdarzenia „utworzono z szablonu", więc ten workflow uruchamia się
+# przy pierwszym pushu na gałąź domyślną (utworzenie repo z szablonu robi pierwszy
+# commit, który wywołuje ten push). Warunek is_template pomija samo repozytorium
+# szablonowe, a ostatni krok usuwa ten workflow i katalog ze zgłoszeniami, żeby
+# całość wykonała się dokładnie raz na nowej kopii.
 on:
   push:
     branches: [main]
-  # Manual fallback in case the initial template push does not start Actions.
+  # Ręczne uruchomienie na wypadek, gdyby pierwszy push z szablonu nie odpalił Actions.
   workflow_dispatch:
 
 jobs:
   create-issues:
-    # Skip on the template repo (is_template == true); only run on instances
-    # created from it (is_template == false).
+    # Pomiń na repozytorium szablonowym (is_template == true); uruchamiaj tylko
+    # na kopiach z niego utworzonych (is_template == false).
     if: ${{ !github.event.repository.is_template }}
     runs-on: ubuntu-latest
     permissions:
-      issues: write    # create the bootstrap issues
-      contents: write  # commit removal of the bootstrap files
+      issues: write    # założenie zgłoszeń startowych
+      contents: write  # commit usuwający pliki startowe
 
     steps:
-      - name: Checkout code
+      - name: Pobierz kod
         uses: actions/checkout@v5
 
-      # Each markdown file in .github/bootstrap-issues/ becomes one issue: the
-      # first heading line is used as the title and the remaining content as the
-      # body. Files are processed in sorted order so issues are created 1, 2, 3.
-      - name: Create onboarding issues
+      # Każdy plik Markdown w .github/bootstrap-issues/ staje się jednym zgłoszeniem:
+      # pierwszy nagłówek to tytuł, reszta to treść. Pliki przetwarzane są
+      # w kolejności alfabetycznej, więc zgłoszenia powstają jako 1, 2, 3.
+      - name: Załóż zgłoszenia startowe
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -38,13 +38,13 @@ jobs:
             gh issue create --title "$title" --body-file "${RUNNER_TEMP}/issue-body.md"
           done
 
-      # Remove this workflow and the issue source folder so the bootstrap only
-      # ever runs once. The commit is made with GITHUB_TOKEN, which by design
-      # does not trigger another workflow run.
-      - name: Remove bootstrap files
+      # Usuń ten workflow i katalog ze zgłoszeniami, żeby bootstrap wykonał się
+      # tylko raz. Commit jest robiony tokenem GITHUB_TOKEN, który celowo nie
+      # wywołuje kolejnego uruchomienia workflow.
+      - name: Usuń pliki startowe
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git rm -r .github/workflows/bootstrap-issues.yml .github/bootstrap-issues
-          git commit -m "chore: remove template bootstrap files"
+          git commit -m "Usuń pliki startowe szablonu"
           git push

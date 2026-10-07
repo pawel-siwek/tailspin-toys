@@ -1,12 +1,12 @@
 /**
- * Builds the grounding file consumed by the Backer Concierge agent.
+ * Buduje plik z wiedzą o katalogu dla agenta Backer Concierge.
  *
- * `toCatalogExport` is a pure transform so it can be unit tested without a
- * database, and the CLI below reads the seeded database through the injectable
- * `src/lib/games.ts` helpers. The output is deterministic (sorted, no
- * `Math.random`) so re-running the export produces byte-identical JSON.
+ * `toCatalogExport` to czysta transformacja, więc da się ją testować bez
+ * bazy, a CLI poniżej czyta zasiloną bazę przez helpery z `src/lib/games.ts`
+ * z wstrzykiwanym `db`. Wynik jest deterministyczny (posortowany, bez
+ * `Math.random`), więc ponowny eksport daje identyczny bajt w bajt JSON.
  *
- * Run with: `npm run db:export`
+ * Uruchomienie: `npm run db:export`
  */
 
 import { mkdirSync, writeFileSync } from 'node:fs';
@@ -19,25 +19,25 @@ import type { Game } from '../src/types/game';
 
 const here = dirname(fileURLToPath(import.meta.url));
 
-/** Default location of the generated grounding file. */
+/** Domyślna lokalizacja wygenerowanego pliku. */
 export const CATALOG_EXPORT_PATH = join(here, 'catalog.json');
 
-const UNKNOWN_CATEGORY = 'Uncategorized';
-const UNKNOWN_PUBLISHER = 'Unknown publisher';
+const UNKNOWN_CATEGORY = 'Bez kategorii';
+const UNKNOWN_PUBLISHER = 'Nieznany wydawca';
 
-/** A single catalog entry as the agent sees it. */
+/** Pojedynczy wpis katalogu, tak jak widzi go agent. */
 export interface CatalogGame {
     id: number;
     title: string;
     description: string;
     category: string;
     publisher: string;
-    /** Omitted entirely when the game has no rating, so the export contains no nulls. */
+    /** Pomijane całkowicie, gdy gra nie ma oceny, żeby w eksporcie nie było nulli. */
     starRating?: number;
     ratingLabel: string;
 }
 
-/** The full grounding document uploaded to the agent. */
+/** Pełny dokument z wiedzą o katalogu wysyłany do agenta. */
 export interface CatalogExport {
     source: string;
     note: string;
@@ -48,9 +48,9 @@ export interface CatalogExport {
 }
 
 const GROUNDING_NOTE =
-    'This file is the complete Tailspin Toys catalog. It contains every game the platform lists. ' +
-    'There are no funding totals, backer counts, player counts, pledge tiers, prices, or release dates in this dataset — ' +
-    'do not state any such figures.';
+    'Ten plik to kompletny katalog Tailspin Toys. Zawiera każdą grę, którą platforma wystawia. ' +
+    'W tym zbiorze nie ma kwot zebranych, liczby wspierających, liczby graczy, progów wsparcia, cen ani dat premiery. ' +
+    'Nie podawaj żadnych takich liczb.';
 
 function mapCatalogGame(game: Game): CatalogGame {
     return {
@@ -65,22 +65,23 @@ function mapCatalogGame(game: Game): CatalogGame {
 }
 
 /**
- * Distinct values sorted by UTF-16 code unit (ordinal, not locale-aware), so the
- * export is byte-identical across environments regardless of the runtime's
- * default locale/ICU data. This is a deterministic order, not a linguistic
- * alphabetical one (e.g. uppercase sorts before lowercase).
+ * Unikalne wartości posortowane po jednostkach kodowych UTF-16 (porządkowo,
+ * bez uwzględniania locale), żeby eksport był identyczny bajt w bajt na każdym
+ * środowisku, niezależnie od domyślnego locale i danych ICU. To porządek
+ * deterministyczny, nie językowo-alfabetyczny (np. wielkie litery przed małymi).
  */
 function distinctSorted(values: string[]): string[] {
     return [...new Set(values)].sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
 }
 
 /**
- * Turn data-access results into the agent grounding document. Pure: the same
- * input always produces the same output, regardless of input ordering.
+ * Zamienia wynik z warstwy danych na dokument dla agenta. Funkcja czysta: to
+ * samo wejście zawsze daje to samo wyjście, niezależnie od kolejności.
  *
- * Games are sorted by title using ordinal (UTF-16 code unit) comparison, with
- * `id` as a tiebreaker for duplicate titles — not locale-aware alphabetical
- * order — so the export is byte-identical across environments.
+ * Gry są sortowane po tytule porównaniem porządkowym (jednostki kodowe
+ * UTF-16), a przy powtórzonych tytułach rozstrzyga `id`. To nie jest porządek
+ * alfabetyczny zależny od locale, dzięki czemu eksport jest identyczny na
+ * każdym środowisku.
  */
 export function toCatalogExport(games: Game[]): CatalogExport {
     const entries = games
@@ -88,7 +89,7 @@ export function toCatalogExport(games: Game[]): CatalogExport {
         .sort((a, b) => (a.title < b.title ? -1 : a.title > b.title ? 1 : a.id - b.id));
 
     return {
-        source: 'Tailspin Toys crowdfunding catalog',
+        source: 'Katalog crowdfundingowy Tailspin Toys',
         note: GROUNDING_NOTE,
         gameCount: entries.length,
         categories: distinctSorted(entries.map((entry) => entry.category)),
@@ -97,12 +98,12 @@ export function toCatalogExport(games: Game[]): CatalogExport {
     };
 }
 
-/** Serialize the export with stable formatting and a trailing newline. */
+/** Serializuje eksport ze stabilnym formatowaniem i końcowym znakiem nowej linii. */
 export function serializeCatalogExport(exported: CatalogExport): string {
     return `${JSON.stringify(exported, null, 2)}\n`;
 }
 
-/** Read the seeded database and write the grounding file to disk. */
+/** Czyta zasiloną bazę i zapisuje plik z katalogiem na dysk. */
 export async function writeCatalogExport(db: Database, outputPath: string = CATALOG_EXPORT_PATH): Promise<CatalogExport> {
     const exported = toCatalogExport(await getAllGames(db));
     mkdirSync(dirname(outputPath), { recursive: true });
@@ -110,16 +111,16 @@ export async function writeCatalogExport(db: Database, outputPath: string = CATA
     return exported;
 }
 
-// Allow running directly: `tsx db/export-catalog.ts`
+// Pozwala uruchomić bezpośrednio: `tsx db/export-catalog.ts`
 if (import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
     const db = createDatabase();
     writeCatalogExport(db)
         .then((exported) => {
-            console.log(`Exported ${exported.gameCount} games to ${CATALOG_EXPORT_PATH}`);
+            console.log(`Wyeksportowano ${exported.gameCount} gier do ${CATALOG_EXPORT_PATH}`);
             process.exit(0);
         })
         .catch((error) => {
-            console.error('Catalog export failed:', error);
+            console.error('Eksport katalogu nie powiódł się:', error);
             process.exit(1);
         });
 }
