@@ -1,7 +1,7 @@
 # Contributing to Tailspin Toys
 
-[fork]: https://github.com/github-samples/tailspin-toys/fork
-[pr]: https://github.com/github-samples/tailspin-toys/compare
+[fork]: https://github.com/pawel-siwek/tailspin-toys/fork
+[pr]: https://github.com/pawel-siwek/tailspin-toys/compare
 [code-of-conduct]: CODE_OF_CONDUCT.md
 
 Thank you for your interest in contributing to Tailspin Toys! Your help is essential for making this crowdfunding platform the best it can be for game creators and backers alike.
@@ -108,7 +108,7 @@ All change requests should start with an issue. You're welcome to file the issue
 
 ## Reporting Issues
 
-Found a bug or have a feature request? Please [open an issue](https://github.com/github-samples/tailspin-toys/issues/new) with:
+Found a bug or have a feature request? Please [open an issue](https://github.com/pawel-siwek/tailspin-toys/issues/new) with:
 
 - A clear, descriptive title
 - Steps to reproduce (for bugs)
